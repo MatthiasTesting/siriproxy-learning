@@ -19,7 +19,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
       svc = OData::Service.new "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV", 
       { :username => "mar", :password=> "Bachelor4711" }
     
-    
+      say svc
     svc.Pages.filter("Parent eq '0'")
     prod = svc.execute
     say "#{prod.to_json}"
