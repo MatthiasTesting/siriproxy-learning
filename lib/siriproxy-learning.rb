@@ -68,19 +68,19 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   
   listen_for /Detail zu (.*)/i do | page_id |
 
-    say "Detailinformationen zu " + page_id + " werden ermittelt!", spoken: "Checking"
-    
-       @service = OData::Service.new "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV/FullPages(#{page_id})", { :username => "mar", :password=> "Bachelor4711" }
-       say @service
+   # say "Detailinformationen zu " + page_id + " werden ermittelt!", spoken: "Checking"
+      say "FullPages(#{page_id})"
+      #@service = OData::Servicedas.new "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV/FullPages(#{page_id})", { :username => "mar", :password=> "Bachelor4711" }
+        #say @service
 
-       @detail_eintrag = @service.execute
+        #@detail_eintrag = @service.execute
        
-       @detail_eintrag.each do |eintrag|
-            say "Content ist folgender : #{eintrag.Content}"
-       end
+       # @detail_eintrag.each do |eintrag|
+        #     say "Content ist folgender : #{eintrag.Content}"
+        #end
     # wenn Parent false ist, dann abspielen
     
-    # bzw. Has Content abprüfen
+    # bzw. Has Content abprÃ¼fen
   end
 
 
