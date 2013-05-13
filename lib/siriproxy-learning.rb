@@ -33,7 +33,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                   say "#{c.Name}"
               end
           elsif @kopf_count == 0
-              say "Keine Kopfeinträge vorhanden"
+              say "Keine Kopfeintraege vorhanden"
           end
          
           request_completed
