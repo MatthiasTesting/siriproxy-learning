@@ -70,7 +70,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 
    # say "Detailinformationen zu " + page_id + " werden ermittelt!", spoken: "Checking"
       say "FullPages(#{page_id})"
-      @service = OData::Servicedas.new "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV/FullPages('#{page_id}')", { :username => "mar", :password=> "Bachelor4711" }
+      @service = OData::Service.new "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV/FullPages('#{page_id}')", { :username => "mar", :password=> "Bachelor4711" }
         #say @service
 
         #@detail_eintrag = @service.execute
