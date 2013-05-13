@@ -68,9 +68,9 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   
   listen_for /Detail zu (.*)/i do | page_id |
 
-   # say "Detailinformationen zu " + page_id + " werden ermittelt!", spoken: "Checking"
-      say "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV/FullPages('#{page_id}')?sap-ds-debug=true"
-      #@service = OData::Service.new "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV/FullPages('#{page_id}')", { :username => "mar", :password=> "Bachelor4711" }
+       say "Detailinformationen zu " + page_id + " werden ermittelt!", spoken: "Checking"
+      
+      @service = OData::Service.new "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV/FullPages('#{page_id}')?sap-ds-debug=true", { :username => "mar", :password=> "Bachelor4711" }
         #say @service
 
         #@detail_eintrag = @service.execute
