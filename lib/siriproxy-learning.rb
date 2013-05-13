@@ -8,7 +8,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
     @kopf_eintraege = ""
     @kopf_count = 0
     @eintraege_count = 0
-
+    @detail_eintrag = ""
   end
 
   def start_query
@@ -67,8 +67,17 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   end
   
   listen_for /Detail zu (.*)/i do | page_id |
-    say "#{@kopf_count}"
+
     say "Detailinformationen zu " + page_id + " werden ermittelt!", spoken: "Checking"
+    
+       @service = OData::Service.new "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV/FullPages(#{page_id})", { :username => "mar", :password=> "Bachelor4711" }
+       say @service
+
+       @detail_eintrag = @service.execute
+       
+       @detail_eintrag.each do |eintrag|
+            say "Content ist folgender : #{eintrag.Content}"
+       end
     # wenn Parent false ist, dann abspielen
     
     # bzw. Has Content abprüfen
