@@ -22,7 +22,6 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
           @kopf_count = svc.execute
           
           say "#{@kopf_count}"
-          
           if @kopf_count > 0
               svc.Pages
               @kopf_eintraege = svc.execute
@@ -40,6 +39,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 end
   
   listen_for /Detail zu (.*)/i do | page_name |
+    say "#{@kopf_count}"
     say "Detailinformationen zu " + page_name + " werden ermittelt!", spoken: "Checking"
     # wenn Parent false ist, dann abspielen
     
