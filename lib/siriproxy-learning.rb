@@ -14,7 +14,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 
   listen_for /Alle Kopfeintraege suchenn/i do
     say "Es werden alle Kopfeintraege gesucht"
-    Thread.new {
+  
           svc = OData::Service.new "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV", { :username => "mar", :password=> "Bachelor4711" }
       
           svc.Pages
@@ -25,11 +25,11 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
           
           request_completed
             
-    }
-  end
+    
+end
   
-  #listen_for /Detail zu (.*)/i do | page_name |
-  #  say "Detailinformationen zu " + page_name + "werden ermittelt!", spoken: "Checking"
-  #end
+  listen_for /Detail zu (.*)/i do | page_name |
+    say "Detailinformationen zu " + page_name + "werden ermittelt!", spoken: "Checking"
+  end
 
 end
