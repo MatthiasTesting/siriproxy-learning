@@ -25,7 +25,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
           @service.Pages.count
           @eintraege_count = @service.execute
           
-          say "#{@kopf_count}"
+          say "#{@eintraege_count}"
           if @eintraege_count > 0
               @service.Pages
               @eintraege = @service.execute
@@ -33,7 +33,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
               say "Folgende Eintraege stehen zur Verfuegung"
 
               @eintraege.each do |c|
-                  say "#{c.Name} mit der ID : +{c.Entryid}"
+                  say "#{c.Name} mit der ID : #{c.Entryid}"
               end
           elsif @eintraege_count == 0
               say "Keine Eintraege vorhanden"
@@ -57,7 +57,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
               say "Folgende Kopfeintraege stehen zur Verfuegung"
 
               @kopf_eintraege.each do |c|
-                  say "#{c.Name} mit der ID : +{c.Entryid}"
+                  say "#{c.Name} mit der ID : #{c.Entryid}"
               end
           elsif @kopf_count == 0
               say "Keine Kopfeintraege vorhanden"
