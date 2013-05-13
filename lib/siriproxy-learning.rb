@@ -8,7 +8,6 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
     @kopf_eintraege = ""
     @kopf_count = 0
     @eintraege_count = 0
-    @service = OData::Service.new "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV", { :username => "mar", :password=> "Bachelor4711" }
 
   end
 
@@ -16,13 +15,13 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   
   end
 
-  def test_connection 
-    
+  def start_connection 
+        @service = OData::Service.new "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV", { :username => "mar", :password=> "Bachelor4711" }
   end
   
   listen_for /Alle Eintraege suchen/i do
     say "Es werden alle Eintraege gesucht"
-
+          start_connection
           svc.Pages.count
           @eintraege_count = svc.execute
           
@@ -46,7 +45,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 
   listen_for /Alle Kopfeintraege suchen/i do
     say "Es werden alle Kopfeintraege gesucht"
-
+          start_connection
           svc.Pages.count
           @kopf_count = svc.execute
           
