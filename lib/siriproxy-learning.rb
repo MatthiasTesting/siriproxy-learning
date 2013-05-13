@@ -22,13 +22,13 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   listen_for /Alle Eintraege suchen/i do
     say "Es werden alle Eintraege gesucht"
           start_connection
-          svc.Pages.count
-          @eintraege_count = svc.execute
+          @service.Pages.count
+          @eintraege_count = @service.execute
           
           say "#{@kopf_count}"
           if @eintraege_count > 0
-              svc.Pages
-              @eintraege = svc.execute
+              @service.Pages
+              @eintraege = @service.execute
 
               say "Folgende Eintraege stehen zur Verfuegung"
 
@@ -46,13 +46,13 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   listen_for /Alle Kopfeintraege suchen/i do
     say "Es werden alle Kopfeintraege gesucht"
           start_connection
-          svc.Pages.count
-          @kopf_count = svc.execute
+          @service.Pages.count
+          @kopf_count = @service.execute
           
           say "#{@kopf_count}"
           if @kopf_count > 0
-              svc.Pages.filter("Parent eq '0'")
-              @kopf_eintraege = svc.execute
+              @service.Pages.filter("Parent eq '0'")
+              @kopf_eintraege = @service.execute
 
               say "Folgende Kopfeintraege stehen zur Verfuegung"
 
