@@ -77,7 +77,8 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
        
         detail.each do |c|
         # Eigentlich fragen ob Content vorlesen oder subpages vorlesen und ggf. eine ebene runter gehne
-            if c.Content == "" && c.Has_Subpages == true
+            if c.Has_Subpages == true
+            #  c.Content == "" &&
                say "Erste Bedinggun"
                # Ask if subpages should be shown 
                #@service.Pages("'#{page_id}'").expand('GetDetails').expand('GetDetails/GetSubpages')
