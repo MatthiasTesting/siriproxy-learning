@@ -73,7 +73,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
        #@service.Pages.expand('GetDetails')
        start_connection
        # service.Pages(2).expand('Page') oder expand('GetDetails')
-       @service.Pages("'00000002'")
+       @service.Pages("'00000002'").expand('GetDetails')
        detail = @service.execute
        
        say "#{detail.to_json}"
