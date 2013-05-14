@@ -76,9 +76,9 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
              
       @detail = @service.execute.first
       
-      @detail.each do |value|
-             say "#{value.Name}"
-       end
+      @detail.each do |a|
+                  say "#{a.Name} mit der ID : #{a.Entryid}"
+              end
          #if "#{c.Has_Subpages}" == true
             #  c.Content == "" &&
               # say "Erste Bedinggun"
