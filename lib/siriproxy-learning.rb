@@ -68,17 +68,18 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   
   listen_for /Detail zu (.*)/i do |page_id|
 
-       say "Detailinformationen zu " + page_id + " werden ermittelt!", spoken: "Checking"
+       say "Detailinformationen zu " + page_id + " werden ermittelt!"
+       say "Du Spinner"
 
-       start_connection
+      # start_connection
        
-      @service.Pages("'#{page_id}'").expand('GetDetails')
+      #@service.Pages("'#{page_id}'").expand('GetDetails')
              
-      @detail = @service.execute
+      #@detail = @service.execute
       
-      @detail.each do |a|
-                  say "#{a.Name} mit der ID : #{a.Entryid} und #{a.Has_Subpages}  "
-        end
+      #@detail.each do |a|
+       #           say "#{a.Name} mit der ID : #{a.Entryid} und #{a.Has_Subpages}  "
+        #end
          #if "#{c.Has_Subpages}" == true
             #  c.Content == "" &&
               # say "Erste Bedinggun"
