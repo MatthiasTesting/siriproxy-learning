@@ -72,8 +72,13 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
        #say "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV/Pages('#{page_id}')/GetDetails?sap-ds-debug=true"
        #@service.Pages.expand('GetDetails')
        start_connection
-       @service.Page(2)
+       @service.Pages
        detail = @service.execute
+       
+       detail(2).expand('Page')
+       detail.each do |eintrag|
+            say "Content ist folgender : #{eintrag.Content}"
+       end
        #say @service
 
         #@detail_eintrag = @service.execute
