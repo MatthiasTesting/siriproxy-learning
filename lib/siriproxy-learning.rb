@@ -94,7 +94,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
            # else
             #   say "Content wird vorgelesen"
            #   # say "#{c.Content}"
-          #  end
+          #  endh
        request_completed
   end
 
