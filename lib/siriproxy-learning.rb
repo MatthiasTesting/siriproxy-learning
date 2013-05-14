@@ -75,12 +75,12 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
        @service.Pages("'#{page_id}'").expand('GetDetails')
               @detail = @service.execute.first
        #@detail = @service.execute
-       say @detail
-      # @detail.each do |value|
+       say "#{@detail}"
+       @detail.each do |value|
        #say "---"
-             #say "#{value.GetDetails.Has_Subpages}"
+             say "#{value}"
              #value_pages = value.Has_Subpages
-       #end
+       end
          #if "#{c.Has_Subpages}" == true
             #  c.Content == "" &&
               # say "Erste Bedinggun"
