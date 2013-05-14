@@ -73,7 +73,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
        start_connection
        
        @service.Pages("'#{page_id}'").expand('GetDetails')
-              @detail = svc.execute.first
+              @detail = @service.execute.first
        #@detail = @service.execute
        say @detail
       # @detail.each do |value|
