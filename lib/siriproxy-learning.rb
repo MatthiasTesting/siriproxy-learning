@@ -70,7 +70,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 
        say "Detailinformationen zu " + page_id + " werden ermittelt!"
        say "Du Spinner"
-       say "Die viastore systems GmbH (früher Haushahn, dann Haushahn Automationssysteme) ist ein internationaler Hersteller von schlüsselfertigen Intralogistik-Anlagen für Industrie und Handel. Dazu gehören Hochregallager, automatische Kleinteilelager, Systeme zur effizienten Kommissionierung, Materialflusssystem, Shuttle-Systeme sowie Distributions- und Logistikzentren."
+       say "Die viastore systems GmbH frueher Haushahn dann Haushahn Automationssysteme ist ein internationaler Hersteller von Intralogistik Anlagen fuer Industrie und Handel. Dazu gehören Hochregallager, automatische Kleinteilelager Systeme zur effizienten Kommissionierung, Materialflusssystem Shuttle-Systeme sowie Distributions und Logistikzentren."
       # start_connection
        
       #@service.Pages("'#{page_id}'").expand('GetDetails')
