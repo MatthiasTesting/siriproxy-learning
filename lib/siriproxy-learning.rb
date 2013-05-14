@@ -66,19 +66,19 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
           request_completed
   end
   
-  listen_for /Detail zu (.*)/i do | page_id |
+  listen_for /Detail zu (.*)/i do |page_id|
 
        say "Detailinformationen zu " + page_id + " werden ermittelt!", spoken: "Checking"
 
        start_connection
        
-       @service.Pages("'#{page_id}'").expand('GetDetails')
+       @service.Pages("'#{page_id}'")
        @detail = @service.execute
        value_pages = ""
+       say @detail
        @detail.each do |value|
+       say "---"
              say value.content
-             say value[0]
-             say "---"
              #value_pages = value.Has_Subpages
        end
          #if "#{c.Has_Subpages}" == true
