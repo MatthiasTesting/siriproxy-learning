@@ -72,12 +72,12 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 
        start_connection
        
-      @service.Pages("'#{page_id}'").expand('GetDetails')
+      @service.Pages("'#{page_id}'").expand('Pages/GetDetails')
              
       @detail = @service.execute
       
       @detail.each do |a|
-                  say "#{a.Name} mit der ID : #{a.Entryid}"
+                  say "#{a.Name} mit der ID : #{a.Entryid} und #{a.Has_Subpages}  "
         end
          #if "#{c.Has_Subpages}" == true
             #  c.Content == "" &&
