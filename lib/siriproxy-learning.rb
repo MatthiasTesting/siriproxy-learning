@@ -76,6 +76,8 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
        detail = @service.execute
        
        say "#{detail.to_json}"
+       
+       request_completed
   end
 
 
