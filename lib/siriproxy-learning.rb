@@ -70,10 +70,10 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 
        #say "Detailinformationen zu " + page_id + " werden ermittelt!", spoken: "Checking"
        #say "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV/Pages('#{page_id}')/GetDetails?sap-ds-debug=true"
-      ser = OData::Service.new "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV", { :username => "mar", :password=> "Bachelor4711" }
        #@service.Pages.expand('GetDetails')
-       ser.Pages.expand('Page')
-       detail = ser.execute
+       start_connection
+       @service.Pages('00000002')
+       detail = @service.execute
        #say @service
 
         #@detail_eintrag = @service.execute
