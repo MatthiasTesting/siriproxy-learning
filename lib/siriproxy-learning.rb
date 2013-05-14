@@ -73,10 +73,9 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
        start_connection
        
        @service.Pages("'#{page_id}'").expand('GetDetails')
-       #prod1 = svc.execute.first
-       @detail = @service.execute
-       value_pages = ""
-       say @detail[1]
+              @detail = svc.execute.first
+       #@detail = @service.execute
+       say @detail
       # @detail.each do |value|
        #say "---"
              #say "#{value.GetDetails.Has_Subpages}"
