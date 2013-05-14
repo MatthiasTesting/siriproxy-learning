@@ -74,10 +74,10 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
        
        @service.Pages("'#{page_id}'").expand('GetDetails')
        @detail = @service.execute
-       @detail.each do |a|
+      # @detail.each do |a|
           # Eigentlich fragen ob Content vorlesen oder subpages vorlesen und ggf. eine ebene runter gehne
-           say "#{a.Name} mit der ID : #{a.Entryid} hat #{a.Has_Subpages} "
-        end
+           say "#{@detail.to_json} "
+        #end
        request_completed
   end
 
