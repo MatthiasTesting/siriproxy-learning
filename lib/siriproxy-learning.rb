@@ -70,10 +70,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 
        say "Detailinformationen zu " + page_id + " werden ermittelt!"
        say "Du Spinner"
-       say "Die viastore systems GmbH (früher Haushahn, dann Haushahn Automationssysteme) ist ein internationaler Hersteller von schlüsselfertigen Intralogistik-Anlagen für Industrie und Handel. Dazu gehören Hochregallager, automatische Kleinteilelager, Systeme zur effizienten Kommissionierung, Materialflusssystem, Shuttle-Systeme sowie Distributions- und Logistikzentren.
-
-Das von viastore systems entwickelte Lagerverwaltungssystem viad@t schafft im Lager eine durchgängige Software-Architektur vom Lagermanagement, der Steuerung von Kommissionier-, Verpackungs- und Versandprozessen bis zum Materialflusssystem und zur Prozesssteuerung. Darüber hinaus ist viastore systems SAP Partner im Bereich Supply Chain Execution (LES/TRM und EWM). Dieser Bereich operiert unter der Bezeichnung viastore SAP Logistics Solutions eigenständig innerhalb der Gruppe und bietet Beratungs- und Softwareleistungen im SAP-Umfeld an."
-
+       say "Die viastore systems GmbH (früher Haushahn, dann Haushahn Automationssysteme) ist ein internationaler Hersteller von schlüsselfertigen Intralogistik-Anlagen für Industrie und Handel. Dazu gehören Hochregallager, automatische Kleinteilelager, Systeme zur effizienten Kommissionierung, Materialflusssystem, Shuttle-Systeme sowie Distributions- und Logistikzentren."
       # start_connection
        
       #@service.Pages("'#{page_id}'").expand('GetDetails')
