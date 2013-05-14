@@ -81,11 +81,20 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
              say "---"
              #value_pages = value.Has_Subpages
        end
-      # say " Has Subpages is " + value_pages
-      # @detail.each do |a|
-          # Eigentlich fragen ob Content vorlesen oder subpages vorlesen und ggf. eine ebene runter gehne
-         # E  say @detail[0].Has_Subpages
-        #end
+         #if "#{c.Has_Subpages}" == true
+            #  c.Content == "" &&
+              # say "Erste Bedinggun"
+               # Ask if subpages should be shown 
+               #@service.Pages("'#{page_id}'").expand('GetDetails').expand('GetDetails/GetSubpages')
+              # detail = @service.execute
+
+               #detail.each do |b|
+               #   say "#{b.Entryid}"
+              # end 
+           # else
+            #   say "Content wird vorgelesen"
+           #   # say "#{c.Content}"
+          #  end
        request_completed
   end
 
