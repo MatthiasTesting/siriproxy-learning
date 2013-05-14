@@ -76,7 +76,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
        @detail = @service.execute
       # @detail.each do |a|
           # Eigentlich fragen ob Content vorlesen oder subpages vorlesen und ggf. eine ebene runter gehne
-           say "#{@detail.to_json.Has_Subpages} "
+           say "#{@detail.Has_Subpages.to_json}"
         #end
        request_completed
   end
