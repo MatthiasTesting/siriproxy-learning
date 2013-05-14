@@ -68,28 +68,14 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   
   listen_for /Detail zu (.*)/i do | page_id |
 
-       #say "Detailinformationen zu " + page_id + " werden ermittelt!", spoken: "Checking"
-       #say "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV/Pages('#{page_id}')/GetDetails?sap-ds-debug=true"
-       #@service.Pages.expand('GetDetails')
+       say "Detailinformationen zu " + page_id + " werden ermittelt!", spoken: "Checking"
+
        start_connection
-       # service.Pages(2).expand('Page') oder expand('GetDetails')
-       @service.Pages("'00000002'").expand('GetDetails')
+       
+       @service.Pages("'#{page_id}'").expand('GetDetails')
        detail = @service.execute
        
        say "#{detail.to_json}"
-      # detaisay.each do |eintrag|
-        #    say "Content ist folgender : #{eintrag.Content}"
-       #+end
-       #say @service
-
-        #@detail_eintrag = @service.execute
-       
-        #@detail_eintrag.each do |eintrag|
-          #  say "Content ist folgender : #{eintrag.Content}"
-       # end
-    # wenn Parent false ist, dann abspielen
-    
-    # bzw. Has Content abprüfen
   end
 
 
