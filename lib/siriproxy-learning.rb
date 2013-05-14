@@ -75,10 +75,10 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
        @service.Pages
        detail = @service.execute
        
-       #detail(2).expand('Page')
-       detail.each do |eintrag|
-            say "Content ist folgender : #{eintrag.Content}"
-       end
+       say "#{detail.to_json}"
+      # detaisay.each do |eintrag|
+        #    say "Content ist folgender : #{eintrag.Content}"
+       #+end
        #say @service
 
         #@detail_eintrag = @service.execute
