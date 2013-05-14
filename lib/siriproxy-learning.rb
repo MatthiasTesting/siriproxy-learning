@@ -78,7 +78,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
        say @detail
        @detail.each do |value|
        say "---"
-             say "#{value.Name}"
+             say "#{value.Has_Subpages}"
              #value_pages = value.Has_Subpages
        end
          #if "#{c.Has_Subpages}" == true
