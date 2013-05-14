@@ -72,7 +72,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 
        start_connection
        
-       @service.Pages("'#{page_id}'").expand('GetDetails').expand('GetSubpages')
+       @service.Pages("'#{page_id}'").expand('GetDetails').expand('FullPages/GetSubpages')
        detail = @service.execute
        
        say "#{detail.to_json}"
