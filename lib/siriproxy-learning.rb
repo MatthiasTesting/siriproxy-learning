@@ -72,7 +72,8 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
        #say "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV/Pages('#{page_id}')/GetDetails?sap-ds-debug=true"
        #@service.Pages.expand('GetDetails')
        start_connection
-       @service.Pages.Page('00000002')
+       # service.Pages(2).expand('Page') oder expand('GetDetails')
+       @service.Pages('00000002')
        detail = @service.execute
        
        say "#{detail.to_json}"
