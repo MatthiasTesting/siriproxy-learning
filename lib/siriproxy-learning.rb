@@ -71,7 +71,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
        say "Detailinformationen zu " + page_id + " werden ermittelt!"
        start_connection
        
-       @service.Pages("'#{page_id}'").expand('GetDetails/FullPages')
+       @service.Pages("'#{page_id}'").expand('GetDetails').expand('GetDetails/FullPages')
              
        @detail = @service.execute
       
