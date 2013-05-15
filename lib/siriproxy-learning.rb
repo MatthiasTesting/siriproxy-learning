@@ -74,9 +74,9 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
        @service.Pages("'#{page_id}'").expand('GetDetails')
              
        @detail = @service.execute
-       say "#{@detail[0].to_json}"
+       say "#{@detail[1].to_json}"
        @detail.each do |a|
-                  say "#{a.Name} mit der ID : #{a.Entryid}"
+                  say "#{a.Name} mit der ID : #{a.Entryid} und Contnet #{a.GetDetails.Content}"
         end
          #if "#{c.Has_Subpages}" == true
             #  c.Content == "" &&
