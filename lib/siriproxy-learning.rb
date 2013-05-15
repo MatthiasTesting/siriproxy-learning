@@ -73,8 +73,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
        @service.Pages("'#{page_id}'").expand('GetDetails')
               
        detaile = @service.execute.first
-       say "{#{.to_json}"
-       say "{#{detaile.GetDetails[0].to_json}"
+       say "{#{detaile.GetDetails.to_json}"
 
        detaile.GetDetails.each do |a|
                   say "#{a.Content} "
