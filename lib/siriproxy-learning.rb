@@ -74,9 +74,8 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
               
        detaile = @service.execute
        say "{#{detaile[0]}"
-       say "{#{detaile[1]}"
        
-       detaile.concat @service.next
+       detaile @service.next
        
        detaile.each do |a|
                   say "#{a.Name} mit der ID : #{a.Entryid} "
