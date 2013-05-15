@@ -18,6 +18,16 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         @service = OData::Service.new "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV", { :username => "mar", :password=> "Bachelor4711." }
   end
   
+  def check_connection 
+        @service = OData::Service.new "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV", { :username => "mar", :password=> "Bachelor4711." }
+        test = @service.execute
+        
+        say "#{test.to_json}"
+  end
+  
+  listen_for /Teste Verbindung/i do
+    check_connection
+  end
   listen_for /Alle Eintraege suchen/i do
     say "Es werden alle Eintraege gesucht"
           start_connection
