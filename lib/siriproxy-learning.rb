@@ -65,7 +65,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
           request_completed
   end
   
-  listen_for /Detail zu (.*)/i do |page_id|
+  listen_for /Show Detail Number (.*)/i do |page_id|
 
        say "Detailinformationen zu " + page_id + " werden ermittelt!"
        start_connection
@@ -73,7 +73,6 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
        @service.Pages("'#{page_id}'").expand('GetDetails')
               
        detaile = @service.execute.first
-       say "{#{detaile.GetDetails.to_json}"
 
        detaile.GetDetails.each do |a|
                   say "#{a.Content} "
