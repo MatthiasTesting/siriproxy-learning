@@ -76,7 +76,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
        @detail = @service.execute
       
        @detail.each do |a|
-                  say "#{a.Name} mit der ID : #{a.Entryid} "
+                  say "#{a.Name} mit der ID : #{a.Entryid} und Content #{a.Content} "
         end
          #if "#{c.Has_Subpages}" == true
             #  c.Content == "" &&
