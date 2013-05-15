@@ -30,7 +30,10 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   end
   
   listen_for /Teste Verbindung/i do
-    check_connection
+    Thread.new {
+        check_connection
+        request_completed
+   }
   end
   listen_for /Alle Eintraege suchen/i do
     say "Es werden alle Eintraege gesucht"
