@@ -73,16 +73,12 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
        @service.Pages("'#{page_id}'").expand('GetDetails')
               
        detaile = @service.execute.first
-       say "{#{detaile.GetDetails.to_json}"
+       say "{#{.to_json}"
        say "{#{detaile.GetDetails[0].to_json}"
 
-
-       
-       #detaile @service.next
-       
-       #detaile.each do |a|
-       #           say "#{a.Name} mit der ID : #{a.Entryid} "
-       # end
+       detaile.GetDetails.each do |a|
+                  say "#{a.Content} "
+        end
          #if "#{c.Has_Subpages}" == true
             #  c.Content == "" &&
               # say "Erste Bedinggun"
