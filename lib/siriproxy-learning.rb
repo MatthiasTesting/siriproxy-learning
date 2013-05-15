@@ -74,7 +74,6 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
               
        detaile = @service.execute.first
        say "{#{detaile.GetDetails.to_json}"
-       say "{#{detaile.GetDetails[].to_json}"
        say "{#{detaile.GetDetails[0].to_json}"
 
 
