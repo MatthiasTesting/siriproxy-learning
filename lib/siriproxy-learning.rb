@@ -8,7 +8,6 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
     @kopf_eintraege = ""
     @kopf_count = 0
     @eintraege_count = 0
-    @detail = ""
   end
 
   def start_query
@@ -72,12 +71,14 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
        start_connection
        
        @service.Pages("'#{page_id}'").expand('GetDetails')
-             
-       @detail = @service.execute
+              
+       detaile = @service.execute
+       say "{#{detaile[0]}"
+       say "{#{detaile[1]}"
        
-       say "#{@detail.to_json}"
-       say "#{@detail.GetDetails.to_json}"
-       @detail.each do |a|
+       detaile.concat @service.next
+       
+       detaile.each do |a|
                   say "#{a.Name} mit der ID : #{a.Entryid} "
         end
          #if "#{c.Has_Subpages}" == true
