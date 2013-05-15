@@ -20,10 +20,9 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   
   def check_connection 
         @service = OData::Service.new "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV", { :username => "mar", :password=> "Bachelor4711." }
-        @service.Pages
-        test = @service.execute
-        say test
-        say "#{test}"
+  
+        puts "Responds to Titles? #{@service.respond_to? :Pages}" # => Responds to Titles?     
+       
   end
   
   listen_for /Teste Verbindung/i do
