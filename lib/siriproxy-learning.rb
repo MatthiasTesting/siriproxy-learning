@@ -73,7 +73,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
        @service.Pages("'#{page_id}'").expand('GetDetails')
               
        detaile = @service.execute.first
-       say "{#{detaile[0]}"
+       say "{#{detaile}"
        
        #detaile @service.next
        
