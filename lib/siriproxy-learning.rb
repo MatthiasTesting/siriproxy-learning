@@ -15,11 +15,11 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   end
 
   def start_connection 
-        @service = OData::Service.new "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV", { :username => "", :password=> "" }
+        @service = OData::Service.new "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV", { :username => "MAR", :password=> "Bachelor4711." }
   end
   
   def check_connection 
-        @service = OData::Service.new "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV", { :username => "", :password=> "" }
+        @service = OData::Service.new "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV", { :username => "MAR", :password=> "Bachelor4711." }
    
         if @service.respond_to? :Pages == true
           say "Connection established"  
@@ -94,7 +94,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                   say "#{a.Content} "
         end
          #if "#{c.Has_Subpages}" == true
-            #  c.Content == "" &&
+            #  c.Content == "" &&das
               # say "Erste Bedinggun"
                # Ask if subpages should be shown 
                #@service.Pages("'#{page_id}'").expand('GetDetails').expand('GetDetails/GetSubpages')
