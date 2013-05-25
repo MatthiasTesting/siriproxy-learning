@@ -81,8 +81,8 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
           request_completed
   end
   
-  listen_for /Detail zu (.*)/i do |page_id|
-
+  listen_for /Nummer (.*)/i do |page_id|
+      page_id = 2
        say "Detailinformationen zu " + page_id + " werden ermittelt!"
        start_connection
        
