@@ -1,4 +1,4 @@
-encoding: utf-8
+# encoding: utf-8  
 require 'cora'
 require 'siri_objects'
 require 'pp'
@@ -6,6 +6,7 @@ require 'ruby_odata'
  
 
 class SiriProxy::Plugin::Learning < SiriProxy::Plugin
+  encoding: utf-8  
   def initialize(config)
     @kopf_eintraege = ""
     @kopf_count = 0
