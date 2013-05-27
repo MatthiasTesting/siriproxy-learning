@@ -36,7 +36,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         request_completed
   
   end
-  listen_for /Alle Einträge suchen/i.sub!('ä','ae') do
+  listen_for /Alle Einträge suchen/i do
     say "Es werden alle Eintraege gesucht"
           start_connection
           @service.Pages.count
