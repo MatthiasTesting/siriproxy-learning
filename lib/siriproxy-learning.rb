@@ -61,7 +61,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   end
 
 
-  listen_for /Alle Kopf suchen/i do
+  listen_for /Alle Kopfeinträge suchen/i do
     say "Es werden alle Kopfeintraege gesucht"
           start_connection
           @service.Pages.filter("Parent eq '0'").count
@@ -84,7 +84,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
           request_completed
   end
   
-  listen_for /Nummer (.*)/i do |page_id|
+  listen_for /Nummer ([0-9,]*[0-9])/i do |page_id|
        say "Detailinformationen zu " + page_id + " werden ermittelt!"
        start_connection
        
