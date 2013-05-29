@@ -1,5 +1,4 @@
-# -*- encoding: utf-8 -*-
-
+#Encoding: UTF-8
 require 'cora'
 require 'siri_objects'
 require 'pp'
