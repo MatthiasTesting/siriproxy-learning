@@ -60,7 +60,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   end
 
 
-  listen_for /Alle Kopfeintraege suchen/i do
+  listen_for /Alle (kopfeinträge|kopfdaten) suchen/i do
     say "Es werden alle Kopfeintraege gesucht"
           start_connection
           @service.Pages.filter("Parent eq '0'").count
