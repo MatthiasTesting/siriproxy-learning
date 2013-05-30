@@ -87,14 +87,28 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
        say "Detailinformationen zu " + page_id + " werden ermittelt!"
        start_connection
        
-       @service.Pages("'#{page_id}'").expand('GetDetails')
-       
-       #@service.Pages("2").expand('GetDetails')       
-       detaile = @service.execute.first
+     
 
-       detaile.GetDetails.each do |a|
+       response = ask "Sicher " + page_id + "?"	
+		     
+		     if (response =~ /Ja/i)
+		        	  Thread.new {
+                   @service.Pages("'#{page_id}'").expand('GetDetails')
+       
+                   #@service.Pages("2").expand('GetDetails')       
+                  detaile = @service.execute.first
+ 
+ 			              detaile.GetDetails.each do |a|
                   say "#{a.Content}"
-        end
+                  end
+				         request_completed
+			     }
+
+    		end
+
+				   
+
+      
          #if "#{c.Has_Subpages}" == true
             #  c.Content == "" &&das
               # say "Erste Bedinggun"
@@ -109,7 +123,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
             #   say "Content wird vorgelesen"
            #   # say "#{c.Content}"
           #  endh
-       request_completed
+
   end
 
 
