@@ -85,95 +85,105 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
        say "Detailinformationen zu " + page_id + " werden ermittelt!"
        start_connection
       
-       response = ask "Sicher " + page_id + "?"	
-		     
-	
-	
-	if (response =~ /Ja/i)
-		Thread.new {
-			@service.Pages("'#{page_id}'").expand('GetDetails')
-	
-			#@service.Pages("2").expand('GetDetails')       
-			detaile = @service.execute.first
-	
-			detaile.GetDetails.each do |a|
-				say "#{a.Content}"
-			end
-			request_completed
-		}
-       end
+       response = ask "Sicher " + page_id + "?" 
+       
+  
+        
+       if (response =~ /Ja/i)
+          Thread.new {
+            @service.Pages("'#{page_id}'").expand('GetDetails')
+        
+            #@service.Pages("2").expand('GetDetails')       
+            detaile = @service.execute.first
+        
+            detaile.GetDetails.each do |a|
+              say "#{a.Content}"
+              end
+              request_completed
+            }
+        end
   end
   
-	
-	listen_for /Alle Inhalte/i do
-		
-		start_connection
-		@service.Pages.filter("Parent eq '0'")
-		@kopf_eintraege = @service.execute
-		
-		say "Folgende Kopfeintraege stehen zur Verfuegung"
-		
-	
-	
-	      @kopf_eintraege.each do |a|
-                  say "#{a.Name} mit der ID : #{a.Entryid}"
+  
+  listen_for /Alle Inhalte/i do
+    
+        start_connection
+        @service.Pages.filter("Parent eq '0'")
+        @kopf_eintraege = @service.execute
+        
+        say "Folgende Kopfeintraege stehen zur Verfuegung"
+        
+        @kopf_eintraege.each do |c|
+          laenge = 0
+          loop do
+              if c.Entryid[laenge] == "0"
+                  laenge = laenge + 1
+                else
+                  c.Entryid = c.Entryid[laenge..8]
+              break
+           end
+          end
+        end
+        
+        @kopf_eintraege.each do |c|
+              say "#{c.Name} mit der ID : #{c.Entryid}"
+        end
+        
+        response_id = ask "Zu welcher ID möchten Sie mehr Informationen?"
+        
+        @kopf_eintraege.each do |eintrag|
+              if reponse_id == eintrag.Entryid 
+                     response = ask "Content oder Unterkapitel?"         
+                     if (response =~ /Content/i) 
+                            @service.Pages("'#{eintrag.Entryid}'").expand('GetDetails')
+         
+                            detaile = @service.execute.first
+                        
+                            detaile.GetDetails.each do |a|
+                              say "#{a.Content}"
+                            end  
+                     elsif (response =~ /Unterkapitel/i)
+                     end
               end
-	#	say "#{response_id.class.to_sy
+        end
+      #if response_id == c.Entryid 
+         
+      # response = ask "Content abspielen oder Unterkapitel anzeigen?"
+      # if (response =~ /Content/i) & c.HasContent == true
+      #   # GetDetails 
+        # say "GetDetails"
+        # @service.Pages("'#{response_id}'").expand('GetDetails')
+    
+          #@service.Pages("2").expand('GetDetails')       
+        # detaile = @service.execute.first
+      
+        # detaile.GetDetails.each do |a|
+        #   say "#{a.Content}"
+        # end
+            #  elsif (response =~ /Unterkapitel/i)
+            #   @service.Pages("'#{response_id}'").expand('GetDetails').expand('GetDetails/GetSubpages')
+                  #   detail = @service.execute
 
-		#	@kopf_eintraege.each do |c|
-		
-			#if response_id == c.Entryid 
-			   
-			#	response = ask "Content abspielen oder Unterkapitel anzeigen?"
-			#	if (response =~ /Content/i) & c.HasContent == true
-			#		# GetDetails 
-				#	say "GetDetails"
-				#	@service.Pages("'#{response_id}'").expand('GetDetails')
-		
-					#@service.Pages("2").expand('GetDetails')       
-				#	detaile = @service.execute.first
-			
-				#	detaile.GetDetails.each do |a|
-				#		say "#{a.Content}"
-				#	end
-			      #  elsif (response =~ /Unterkapitel/i)
-			      #  	@service.Pages("'#{response_id}'").expand('GetDetails').expand('GetDetails/GetSubpages')
-              		#		detail = @service.execute
+            #  end
+    # end 
+      #end
+    
+       
+    #@service.Pages("'#{page_id}'")
+  
+    #@service.Pages("2").expand('GetDetails')       
+    #detaile = @service.execute.first
 
-			      #  end
-		#	end	
-			#end
-		
-		   
-		#@service.Pages("'#{page_id}'")
-	
-		#@service.Pages("2").expand('GetDetails')       
-		#detaile = @service.execute.first
-
-		#detaile.GetDetails.each do |a|
-	#		say "#{a.Content}"
-	#	end
-		
-		
-		
-		request_completed
-	end
+    #detaile.GetDetails.each do |a|
+  #   say "#{a.Content}"
+  # end
+    
+    
+    
+    request_completed
+  end
 
 
-         #if "#{c.Has_Subpages}" == true
-            #  c.Content == "" &&das
-              # say "Erste Bedinggun"
-               # Ask if subpages should be shown 
-               #@service.Pages("'#{page_id}'").expand('GetDetails').expand('GetDetails/GetSubpages')
-              # detail = @service.execute
-
-               #detail.each do |b|
-               #   say "#{b.Entryid}"
-              # end 
-           # else
-            #   say "Content wird vorgelesen"
-           #   # say "#{c.Content}"
-          #  endh
 
  
 
