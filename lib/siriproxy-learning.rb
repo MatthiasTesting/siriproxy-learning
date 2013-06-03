@@ -148,7 +148,6 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                           @service.Pages("'#{eintrag.Entryid}'").expand('GetDetails').expand('GetDetails/GetSubpages')
                          
                           unterkapitel = @service.execute.first
-                             say "#{unterkapitel.GetSubpages}"
                               say "#{unterkapitel.GetDetails[1]}"
                         # say "#{unterkapitel.GetDetails.Fullpages.Getsubpages}"
                      end
