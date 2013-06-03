@@ -120,9 +120,8 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 		response_id = ask "Welche ID anzeigen?"	
 		
 		@kopf_eintraege.each do |c|
-			response_id.strip!
-			c.Entryid.strip!
-			say "#{response_id} und #{c.Entryid}"
+	
+			say "#{response_id} und #{c.Entryid.strip!}"
 			#if response_id == c.Entryid 
 			   
 			#	response = ask "Content abspielen oder Unterkapitel anzeigen?"
