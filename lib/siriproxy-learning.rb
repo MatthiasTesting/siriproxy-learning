@@ -113,19 +113,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 		
 		say "Folgende Kopfeintraege stehen zur Verfuegung"
 		
-		@kopf_eintraege.each do |c|
-			laenge = 0
-			i = 0
-			loop do
-			    if c.Entryid[i] == "0"
-			    	    i = i + 1
-	  			    laenge = laenge + 1
-	  		    else
-	  		    	c.Entryid = c.Entryid[laenge..8]
-	  			break
-	  	            end
-			end
-		end
+	
 	
 	      @kopf_eintraege.each do |a|
                   say "#{a.Name} mit der ID : #{a.Entryid}"
