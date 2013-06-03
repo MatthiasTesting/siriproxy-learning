@@ -16,15 +16,15 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   
   end
 
-  def start_connection 
+  def start_connection
         @service = OData::Service.new "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV", { :username => "MAR", :password=> "Bachelor4711." }
   end
   
-  def check_connection 
+  def check_connection
         @service = OData::Service.new "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV", { :username => "MAR", :password=> "Bachelor4711." }
    
         if @service.respond_to? :Pages == true
-          say "Connection established"  
+          say "Connection established"
         else
           say "No Connection"
         end
@@ -85,7 +85,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
        say "Detailinformationen zu " + page_id + " werden ermittelt!"
        start_connection
       
-       response = ask "Sicher " + page_id + "?" 
+       response = ask "Sicher " + page_id + "?"
        
   
         
@@ -93,7 +93,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
           Thread.new {
             @service.Pages("'#{page_id}'").expand('GetDetails')
         
-            #@service.Pages("2").expand('GetDetails')       
+            #@service.Pages("2").expand('GetDetails')
             detaile = @service.execute.first
         
             detaile.GetDetails.each do |a|
@@ -121,7 +121,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
               else
                  c.Entryid = c.Entryid[laenge..8]
                  break
-              end  
+              end
            end
         end
        
@@ -133,17 +133,23 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         response_id = ask "Zu welcher ID möchten Sie mehr Informationen?"
         
         @kopf_eintraege.each do |eintrag|
-               if response_id == eintrag.Entryid 
-                     response = ask "Content oder Unterkapitel?"         
-                     if (response =~ /Content/i) 
-                            @service.Pages("'#{eintrag.Entryid}'").expand('GetDetails')
-         
-                            detaile = @service.execute.first
-                        
-                            detaile.GetDetails.each do |a|
-                              say "#{a.Content}"
-                            end  
+               if response_id == eintrag.Entryid
+                     response = ask "Content oder Unterkapitel?"
+                     if (response =~ /Content/i)
+                          @service.Pages("'#{eintrag.Entryid}'").expand('GetDetails')
+       
+                          detaile = @service.execute.first
+                      
+                          detaile.GetDetails.each do |a|
+                            say "#{a.Content}"
+                          end
                      elsif (response =~ /Unterkapitel/i)
+                          @service.Pages("'#{eintrag.Entryid}'").expand('GetDetails').expand('GetDetails/GetSubpages')
++                         
+                          unterkapitel = @service.execute
+                          unterkapitel.each do |a|
+                            say "#{a.Entryid}"
+                          end
                      end
               end
         end
