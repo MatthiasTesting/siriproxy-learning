@@ -132,7 +132,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         response_id = ask "Zu welcher ID möchten Sie mehr Informationen?"
         
         @kopf_eintraege.each do |eintrag|
-              if reponse_id == eintrag.Entryid 
+               response_id == eintrag.Entryid 
                      response = ask "Content oder Unterkapitel?"         
                      if (response =~ /Content/i) 
                             @service.Pages("'#{eintrag.Entryid}'").expand('GetDetails')
