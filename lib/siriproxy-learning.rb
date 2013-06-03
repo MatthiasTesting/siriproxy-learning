@@ -149,9 +149,9 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                          
                           unterkapitel = @service.execute.first
                            say "#{unterkapitel.GetDetails.GetSubpages}"
-                              say "#{unterkapitel.GetSubpages}"
-                              say "#{unterkapitel.GetDetails}"
-                         say "#{unterkapitel.GetDetails.Fullpages.Getsubpages}"
+                            #  say "#{unterkapitel.GetSubpages}"
+                           #   say "#{unterkapitel.GetDetails}"
+                        # say "#{unterkapitel.GetDetails.Fullpages.Getsubpages}"
                      end
               end
         end
