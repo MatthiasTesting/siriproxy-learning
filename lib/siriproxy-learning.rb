@@ -118,8 +118,8 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 		end
 		
 		response_id = ask "Welche ID anzeigen?"	
-		response_id.to_s.rjust(8, '0')
-		say "#{response_id}"
+		lenghe = c.Entryid.length
+		say "#{lenghe}"
 
 		#	@kopf_eintraege.each do |c|
 		
