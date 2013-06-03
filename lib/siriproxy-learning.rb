@@ -121,7 +121,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 			    	    i = i + 1
 	  			    laenge = laenge + 1
 	  		    else
-	  		    	@kopf_eintraege[i].Entryid = c.Entryid[laenge..8]
+	  		    	c.Entryid = c.Entryid[laenge..8]
 	  			break
 	  	            end
 			end
