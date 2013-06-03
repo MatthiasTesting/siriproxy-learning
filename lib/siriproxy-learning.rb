@@ -114,8 +114,45 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 		say "Folgende Kopfeintraege stehen zur Verfuegung"
 		
 		@kopf_eintraege.each do |c|
-		say "#{c.Name} mit der ID : #{c.Entryid}"
+			say "#{c.Name} mit der ID : #{c.Entryid}"
 		end
+		
+		response_id = ask "Welche ID anzeigen?"	
+		
+		@kopf_eintraege.each do |c|
+			if response_id == c.Entryid 
+			   
+				response = ask "Content abspielen oder Unterkapitel anzeigen?"
+				if (response =~ /Content/i) & c.HasContent == true
+					# GetDetails 
+					say "GetDetails"
+					@service.Pages("'#{response_id}'").expand('GetDetails')
+		
+					#@service.Pages("2").expand('GetDetails')       
+					detaile = @service.execute.first
+			
+					detaile.GetDetails.each do |a|
+						say "#{a.Content}"
+					end
+			        elsif (response =~ /Unterkapitel/i)
+			        	@service.Pages("'#{response_id}'").expand('GetDetails').expand('GetDetails/GetSubpages')
+              				detail = @service.execute
+
+			        end
+			end	
+		end
+		
+		   
+		#@service.Pages("'#{page_id}'")
+	
+		#@service.Pages("2").expand('GetDetails')       
+		#detaile = @service.execute.first
+
+		#detaile.GetDetails.each do |a|
+	#		say "#{a.Content}"
+	#	end
+		
+		
 		
 		request_completed
 	end
