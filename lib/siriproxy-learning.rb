@@ -121,12 +121,15 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 			    	    i = i + 1
 	  			    laenge = laenge + 1
 	  		    else
-	  		    	c.Entryid = c.Entryid[laenge..8]
+	  		    	@kopf_eintraege[i].Entryid = c.Entryid[laenge..8]
 	  			break
 	  	            end
 			end
 		end
 	
+	      @kopf_eintraege.each do |a|
+                  say "#{a.Name} mit der ID : #{a.Entryid}"
+              end
 	#	say "#{response_id.class.to_sy
 
 		#	@kopf_eintraege.each do |c|
