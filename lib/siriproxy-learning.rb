@@ -117,7 +117,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 			say "#{c.Name} mit der ID : #{c.Entryid}"
 		end
 					
-		#response_id = ask "Welche ID anzeigen?"
+		response_id = ask "Welche ID anzeigen?"
 		#laenge = 8 - response_id.length
 		#say laenge
 		
