@@ -42,7 +42,6 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
           @service.Pages.count
           @eintraege_count = @service.execute
           
-          say "#{@eintraege_count}"
           if @eintraege_count > 0
               @service.Pages
               @eintraege = @service.execute
@@ -61,12 +60,11 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 
 
   listen_for /Alle (kopfeinträge|kopfdaten) suchen/i do
-    say "Es werden alle Kopfeintraege gesucht"
           start_connection
           @service.Pages.filter("Parent eq '0'").count
           @kopf_count = @service.execute
-          
-          say "#{@kopf_count}"
+          say "Es werden alle Kopfeintraege gesucht"
+
           if @kopf_count > 0
               @service.Pages.filter("Parent eq '0'")
               @kopf_eintraege = @service.execute
@@ -86,27 +84,41 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   listen_for /Nummer ([0-9,]*[0-9])/i do |page_id|
        say "Detailinformationen zu " + page_id + " werden ermittelt!"
        start_connection
-       
-     
-
+      
        response = ask "Sicher " + page_id + "?"	
 		     
-		     if (response =~ /Ja/i)
-		        	  Thread.new {
-                   @service.Pages("'#{page_id}'").expand('GetDetails')
-       
-                   #@service.Pages("2").expand('GetDetails')       
-                  detaile = @service.execute.first
- 
- 			              detaile.GetDetails.each do |a|
-                  say "#{a.Content}"
-                  end
-				         request_completed
-			     }
+	
+	
+	if (response =~ /Ja/i)
+		Thread.new {
+			@service.Pages("'#{page_id}'").expand('GetDetails')
+	
+			#@service.Pages("2").expand('GetDetails')       
+			detaile = @service.execute.first
+	
+			detaile.GetDetails.each do |a|
+				say "#{a.Content}"
+			end
+			request_completed
+		}	
+  end
 
-    		end
 
-				   
+	listen_for /Alle Inhalte/i do
+		
+		start_connection
+		@service.Pages.filter("Parent eq '0'")
+		@kopf_eintraege = @service.execute
+		
+		say "Folgende Kopfeintraege stehen zur Verfuegung"
+		
+		@kopf_eintraege.each do |c|
+		say "#{c.Name} mit der ID : #{c.Entryid}"
+		end
+		
+		request_completed
+	end
+
 
       
          #if "#{c.Has_Subpages}" == true
