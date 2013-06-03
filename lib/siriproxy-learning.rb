@@ -121,13 +121,10 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 			    	    i = i + 1
 	  			    laenge = laenge + 1
 	  		    else
+	  		    	c.Entryid = c.Entryid[laenge..8]
 	  			break
 	  	            end
 			end
-		
-			say laenge
-
-			say "#{c.Name} mit der ID : #{c.Entryid}"
 		end
 	
 	#	say "#{response_id.class.to_sy
