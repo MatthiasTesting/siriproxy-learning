@@ -129,21 +129,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 
 			say "#{c.Name} mit der ID : #{c.Entryid}"
 		end
-					
-		response_id = ask "Welche ID anzeigen?"
-		#laenge = 8 - response_id.length
-		#say laenge
-		
 	
-		@kopf_eintraege.each do |c|
-			say c.Entryid.scan(response_id)
-			if(c.Entryid =~ /response_id/)
-				say "JO"
-			end
-		#	test =	c.Entryid[laenge]
-		#	say test
-		end
-	#	
 	#	say "#{response_id.class.to_sy
 
 		#	@kopf_eintraege.each do |c|
