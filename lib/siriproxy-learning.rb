@@ -120,7 +120,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 		response_id = ask "Welche ID anzeigen?"	
 		
 		@kopf_eintraege.each do |c|
-	
+			response_id.rjust(8, '0')
 			say "#{response_id} und #{c.Entryid.strip!}"
 			#if response_id == c.Entryid 
 			   
