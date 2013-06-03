@@ -115,11 +115,12 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 		
 		@kopf_eintraege.each do |c|
 			say "#{c.Name} mit der ID : #{c.Entryid}"
+			lenghe = c.Entryid.length
+			say "#{lenghe}"
 		end
 		
 		response_id = ask "Welche ID anzeigen?"	
-		lenghe = c.Entryid.length
-		say "#{lenghe}"
+	
 
 		#	@kopf_eintraege.each do |c|
 		
