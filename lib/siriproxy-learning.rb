@@ -122,7 +122,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 		say laenge
 		
 		@kopf_eintraege.each do |c|
-			test =	c.Entryid.index(response_id, laenge)
+			test =	c.Entryid[laenge]
 			say test
 		end
 	#	
