@@ -120,26 +120,27 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 		response_id = ask "Welche ID anzeigen?"	
 		
 		@kopf_eintraege.each do |c|
-			if response_id == c.Entryid 
+			say "#{response_id} und #{c.Entryid}"
+			#if response_id == c.Entryid 
 			   
-				response = ask "Content abspielen oder Unterkapitel anzeigen?"
-				if (response =~ /Content/i) & c.HasContent == true
-					# GetDetails 
-					say "GetDetails"
-					@service.Pages("'#{response_id}'").expand('GetDetails')
+			#	response = ask "Content abspielen oder Unterkapitel anzeigen?"
+			#	if (response =~ /Content/i) & c.HasContent == true
+			#		# GetDetails 
+				#	say "GetDetails"
+				#	@service.Pages("'#{response_id}'").expand('GetDetails')
 		
 					#@service.Pages("2").expand('GetDetails')       
-					detaile = @service.execute.first
+				#	detaile = @service.execute.first
 			
-					detaile.GetDetails.each do |a|
-						say "#{a.Content}"
-					end
-			        elsif (response =~ /Unterkapitel/i)
-			        	@service.Pages("'#{response_id}'").expand('GetDetails').expand('GetDetails/GetSubpages')
-              				detail = @service.execute
+				#	detaile.GetDetails.each do |a|
+				#		say "#{a.Content}"
+				#	end
+			      #  elsif (response =~ /Unterkapitel/i)
+			      #  	@service.Pages("'#{response_id}'").expand('GetDetails').expand('GetDetails/GetSubpages')
+              		#		detail = @service.execute
 
-			        end
-			end	
+			      #  end
+		#	end	
 		end
 		
 		   
