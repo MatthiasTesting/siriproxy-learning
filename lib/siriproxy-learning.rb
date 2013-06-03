@@ -117,13 +117,14 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
           laenge = 0
           loop do
               if c.Entryid[laenge] == "0"
-                  laenge = laenge + 1
-                else
-                  c.Entryid = c.Entryid[laenge..8]
-              break
+                 laenge = laenge + 1
+              else
+                 c.Entryid = c.Entryid[laenge..8]
+                 break
+              end  
            end
-          end
         end
+       
         
         @kopf_eintraege.each do |c|
               say "#{c.Name} mit der ID : #{c.Entryid}"
@@ -132,7 +133,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         response_id = ask "Zu welcher ID möchten Sie mehr Informationen?"
         
         @kopf_eintraege.each do |eintrag|
-               response_id == eintrag.Entryid 
+               if response_id == eintrag.Entryid 
                      response = ask "Content oder Unterkapitel?"         
                      if (response =~ /Content/i) 
                             @service.Pages("'#{eintrag.Entryid}'").expand('GetDetails')
@@ -146,45 +147,9 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                      end
               end
         end
-      #if response_id == c.Entryid 
-         
-      # response = ask "Content abspielen oder Unterkapitel anzeigen?"
-      # if (response =~ /Content/i) & c.HasContent == true
-      #   # GetDetails 
-        # say "GetDetails"
-        # @service.Pages("'#{response_id}'").expand('GetDetails')
-    
-          #@service.Pages("2").expand('GetDetails')       
-        # detaile = @service.execute.first
-      
-        # detaile.GetDetails.each do |a|
-        #   say "#{a.Content}"
-        # end
-            #  elsif (response =~ /Unterkapitel/i)
-            #   @service.Pages("'#{response_id}'").expand('GetDetails').expand('GetDetails/GetSubpages')
-                  #   detail = @service.execute
 
-            #  end
-    # end 
-      #end
-    
-       
-    #@service.Pages("'#{page_id}'")
-  
-    #@service.Pages("2").expand('GetDetails')       
-    #detaile = @service.execute.first
-
-    #detaile.GetDetails.each do |a|
-  #   say "#{a.Content}"
-  # end
-    
-    
-    
-    request_completed
+        request_completed
   end
 
-
-
- 
 
 end
