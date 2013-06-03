@@ -147,14 +147,15 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                      elsif (response =~ /Unterkapitel/i)
                           @service.Pages("'#{eintrag.Entryid}'").expand('GetDetails').expand('GetDetails/GetSubpages')
                          
-                          unterkapitel = @service.execute
-                          say "#{unterkapitel}"
-                          unterkapitel.GetSubpages.each do |a|
-                            say "#{a.Entryid}"
-                          end
+                          unterkapitel = @service.execute.first
+                           say "#{unterkapitel.GetDetails.GetSubpages}"
+                              say "#{unterkapitel.GetSubpages}"
+                              say "#{unterkapitel.GetDetails}"
+                         say "#{unterkapitel.GetDetails.Fullpages.Getsubpages}"
                      end
               end
         end
+
 
         request_completed
   end
