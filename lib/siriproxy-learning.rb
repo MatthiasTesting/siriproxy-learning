@@ -100,10 +100,11 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 				say "#{a.Content}"
 			end
 			request_completed
-		}	
+		}
+       end
   end
-
-
+  
+	
 	listen_for /Alle Inhalte/i do
 		
 		start_connection
@@ -120,7 +121,6 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 	end
 
 
-      
          #if "#{c.Has_Subpages}" == true
             #  c.Content == "" &&das
               # say "Erste Bedinggun"
@@ -136,7 +136,6 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
            #   # say "#{c.Content}"
           #  endh
 
-  end
-
+ 
 
 end
