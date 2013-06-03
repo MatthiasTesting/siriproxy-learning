@@ -123,7 +123,10 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 		
 	
 		@kopf_eintraege.each do |c|
-			say c.Entryid.include?(response_id)
+			say c.Entryid.scan(response_id)
+			if(c.Entryid =~ /response_id/)
+				say "JO"
+			end
 		#	test =	c.Entryid[laenge]
 		#	say test
 		end
