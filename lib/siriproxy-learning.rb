@@ -158,17 +158,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   end 
   
   listen_for /check ([0-9,]*[0-9])/i do |page_id|        
-  
-        start_connection
-        checkContent = getContent(page_id)
-        say checkContent
-        
-        checkSubPages = getSubPages(page_id)
-        
-          
-           say "#{checkSubPages} "
 
-          
   end
   
   listen_for /Alle Inhalte/i do
@@ -206,6 +196,74 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         request_completed
        
   end
+  
+   listen_for /Alle Inhalte2/i do
+
+        start_connection
+        
+        @service.Pages.filter("Parent eq '0'")
+        @kopf_eintraege = @service.execute
+        
+        say "Folgende Kopfeintraege stehen zur Verfuegung"
+       
+        remove_zeros(@kopf_eintraege)
+          
+        @kopf_eintraege.each do |c|
+              say "#{c.Name} mit der ID : #{c.Entryid}"
+        end
+        
+        response_id = ask "Zu welcher ID möchten Sie mehr Informationen?"
+        
+        @kopf_eintraege.each do |eintrag|
+               if response_id == eintrag.Entryid
+                     
+                @service.Pages("'#{eintrag.Entryid}'").expand('GetDetails')
+         
+                detail = @service.execute.first            
+                detail.GetDetails.each do |a|
+                  hasSubPages = a.Has_Subpages
+                end                
+                     if eintrag.HasContent == "true" && hasSubpages == "true"
+
+                         response = ask "Es liegt ein Content vor oder doch Unterkapitel anzeigen lassen?"  
+                         if (response =~ /Content/i) 
+                           
+                             showPage(eintrag.Entryid)
+
+                         elsif (response =~ /Unterkapitel/i) 
+                              @service.Pages("'#{eintrag.Entryid}'").expand('GetDetails').expand('GetDetails/GetSubpages')
+                         
+                              unterkapitel = @service.execute.first
+                              unterkapitel.GetDetails.each do |b|
+                                  say "Folgende Unterkapitel liegen vor #{b.Entryid}"
+                              end
+                          end
+                     elsif eintrag.HasContent == "false" && hasSubPages == "true"
+                             
+                             @service.Pages("'#{eintrag.Entryid}'").expand('GetDetails')
+                         
+                              kapitel = @service.execute.first
+                              kapitel.GetDetails.each do |_kapitel|
+                                  if kapitel.Has_Subpages == "true"
+                                      @service.Pages("'#{_kapitel.Entryid}'").expand('GetDetails').expand('GetDetails/GetSubpages')
+                                 
+                                      unterkapitel = @service.execute.first
+                                      unterkapitel.GetDetails.each do |_unterkapite|
+                                          say "Folgende Unterkapitel liegen vor #{_unterkapite.Entryid}"
+                                      end
+                                  end  
+                              end
+                                
+                           
+                     end
+                      
+              
+              end
+        end
+        request_completed
+       
+  end
+  
   
 
   
