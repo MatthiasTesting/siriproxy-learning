@@ -154,8 +154,8 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         subPage = checkIfSubPages(page_id)
         say "Subpages " + subPage
         
-        Content = checkIfContent(page_id)
-        say "Content " + Content
+        _content = checkIfContent(page_id)
+        say "Content " + _content
 
        
   end
