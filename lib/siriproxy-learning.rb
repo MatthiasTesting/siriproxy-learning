@@ -12,9 +12,6 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
     @eintraege_count = 0
   end
 
-  def start_query
-  
-  end
 
   def start_connection
         @service = OData::Service.new "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV", { :username => "MAR", :password=> "Bachelor4711." }
@@ -36,6 +33,26 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         request_completed
   
   end
+  
+        
+  def showPage(page_id)  
+       response = ask "Sicher " + page_id + "?"
+      
+       if (response =~ /Ja/i)
+          Thread.new {
+            @service.Pages("'#{page_id}'").expand('GetDetails')
+        
+            detaile = @service.execute.first
+        
+            detaile.GetDetails.each do |a|
+              say "#{a.Content}"
+              end
+              request_completed
+            }
+        end
+  end 
+  
+  
   listen_for /Alle Eintraege suchen/i do
     say "Es werden alle Eintraege gesucht"
           start_connection
@@ -82,32 +99,18 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   end
   
   listen_for /Nummer ([0-9,]*[0-9])/i do |page_id|
-       say "Detailinformationen zu " + page_id + " werden ermittelt!"
-       start_connection
-      
-       response = ask "Sicher " + page_id + "?"
+    
+        start_connection
        
-  
-        
-       if (response =~ /Ja/i)
-          Thread.new {
-            @service.Pages("'#{page_id}'").expand('GetDetails')
-        
-            #@service.Pages("2").expand('GetDetails')
-            detaile = @service.execute.first
-        
-            detaile.GetDetails.each do |a|
-              say "#{a.Content}"
-              end
-              request_completed
-            }
-        end
+        showPage(page_id)
   end
   
   
   listen_for /Alle Inhalte/i do
     
+ 
         start_connection
+        
         @service.Pages.filter("Parent eq '0'")
         @kopf_eintraege = @service.execute
         
@@ -134,31 +137,33 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         
         @kopf_eintraege.each do |eintrag|
                if response_id == eintrag.Entryid
-                     response = ask "Content oder Unterkapitel?"
-                     if (response =~ /Content/i)
-                          @service.Pages("'#{eintrag.Entryid}'").expand('GetDetails')
-       
-                          detaile = @service.execute.first
-                           say "#{detaile}"
+                     if eintrag.hasContent == true 
+                         response = ask "Es liegt ein Content vor oder doch Unterkapitel anzeigen lassen?"  
+                         if (response =~ /Content/i) 
+                           
+                             showPage(eintrag.Entryid)
 
-                          detaile.GetDetails.each do |a|
-                            say "#{a.Content}"
-                          end
-                     elsif (response =~ /Unterkapitel/i)
-                          @service.Pages("'#{eintrag.Entryid}'").expand('GetDetails').expand('GetDetails/GetSubpages')
+                         elsif (response =~ /Unterkapitel/i) 
+                              @service.Pages("'#{eintrag.Entryid}'").expand('GetDetails').expand('GetDetails/GetSubpages')
                          
-                          unterkapitel = @service.execute.first
-                          unterkapitel.GetDetails.each do |b|
-                            say "#{b.Entryid}"
-                          end  
-                        # say "#{unterkapitel.GetDetails.Fullpages.Getsubpages}"
+                              unterkapitel = @service.execute.first
+                              unterkapitel.GetDetails.each do |b|
+                                  say "Folgende Unterkapitel liegen vor #{b.Entryid}"
+                              end
+                          end
+                       
+                     elsif eintrag.hasContent == false
+                        response = ask "Es liegt kein Content, folgende Unterkapitel stehen aber zur Verfügung?"  
+                          
                      end
+                      
+              
               end
         end
-
-
         request_completed
+       
   end
+  
 
-
-end
+  
+  end
