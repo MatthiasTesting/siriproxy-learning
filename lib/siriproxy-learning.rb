@@ -120,7 +120,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   def getSubPages(eintrag_id)
       @service.Pages("'#{eintrag_id}'").expand('GetDetails').expand('GetDetails/GetSubpages')
       
-      subPages = @service.execute.first
+      subPages = @service.execute
       
       return subPages.GetDetails
   end 
@@ -165,11 +165,10 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         
         checkSubPages = getSubPages(page_id)
         
-        checkSubPages.each do |sub|
-           say "Entryid : #{sub.Entryid} "
+          
+           say "#{checkSubPages} "
 
-          end
-        
+          
   end
   
   listen_for /Alle Inhalte/i do
