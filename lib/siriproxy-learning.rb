@@ -33,9 +33,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         request_completed
   
   end
-  
 
-  
   listen_for /Alle Eintraege suchen/i do
     say "Es werden alle Eintraege gesucht"
           start_connection
@@ -88,23 +86,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         showPage(page_id)
   end
       
-  def showPage(page_id)  
-       response = ask "Sicher " + page_id + "?"
-      
-       if (response =~ /Ja/i)
-          Thread.new {
-            @service.Pages("'#{page_id}'").expand('GetDetails')
-        
-            detaile = @service.execute.first
-        
-            detaile.GetDetails.each do |a|
-              say "#{a.Content}"
-              end
-              request_completed
-            }
-        end
-  end 
-  
+
   def remove_zeros(eintraege)
         eintraege.each do |c|
         laenge = 0
@@ -117,6 +99,64 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
             end
          end
       end
+  end
+  
+  def showPage(page_id)        
+
+        @service.Pages("'#{page_id}'").expand('GetDetails')
+    
+        detaile = @service.execute.first
+    
+        detaile.GetDetails.each do |a|
+          say "#{a.Content}"
+          end
+    
+  end 
+  
+  def checkIfSubPages(eintrag_id)
+    
+        hasSubPages = "false"
+        @service.Pages("'#{eintrag_id}'").expand('GetDetails')
+    
+        page = @service.execute.first
+    
+        page.GetDetails.each do |a|
+             hasSubPages = a.Has_Subpages
+        end
+        
+        return hasSubPages
+         
+  end
+  
+  def getSubPages(eintrag_id)
+    
+  end 
+  
+  def checkIfContent(eintrag_id)
+    
+        hasContent = "false"
+        @service.Pages("'#{eintrag_id}'")
+    
+        page = @service.execute.first
+    
+        page.each do |a|
+             hasContent = a.HasContent
+        end
+        
+        return hasContent
+  end
+  
+  listen_for /check ([0-9,]*[0-9])/i do |page_id|
+    
+        start_connection
+        
+        subPage = checkIfSubPages(page_id)
+        say "Subpages " + subPage
+        
+        Content = checkIfContent(page_id)
+        say "Content " + Content
+
+       
   end
   
   listen_for /Alle Inhalte/i do
@@ -138,26 +178,16 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         
         @kopf_eintraege.each do |eintrag|
                if response_id == eintrag.Entryid
-                     if eintrag.HasContent == "true" 
-                         response = ask "Es liegt ein Content vor oder doch Unterkapitel anzeigen lassen?"  
-                         if (response =~ /Content/i) 
-                           
-                             showPage(eintrag.Entryid)
-
-                         elsif (response =~ /Unterkapitel/i) 
-                              @service.Pages("'#{eintrag.Entryid}'").expand('GetDetails').expand('GetDetails/GetSubpages')
-                         
-                              unterkapitel = @service.execute.first
-                              unterkapitel.GetDetails.each do |b|
-                                  say "Folgende Unterkapitel liegen vor #{b.Entryid}"
-                              end
-                          end
-                       
-                     elsif eintrag.HasContent == "false"
-                           say "Kein Content"          
- 
-                     end
-                      
+                    # Content
+                    
+                    
+                    
+                    # schleife bis content abgespielt oder Unterkapitel keine mehr vorhanden sind
+                    # Unterkapitel       
+              
+                        # Content?
+                        
+                        # UNterkapitel?
               
               end
         end
