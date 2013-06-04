@@ -155,8 +155,9 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
     
   end 
   
-  listen_for /check ([0-9,]*[0-9])/i do |page_id|
-         
+  listen_for /check ([0-9,]*[0-9])/i do |page_id|        
+  
+        start_connection
         checkContent = getContent(page_id)
         say checkContent
         
