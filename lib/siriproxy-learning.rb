@@ -135,12 +135,14 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   def checkIfContent(eintrag_id)
     
         hasContent = "false"
-        @service.Pages("'#{eintrag_id}'").expand('GetDetails')
+        @service.Pages
     
         page = @service.execute.first
     
         page.each do |a|
-             hasContent = a.HasContent
+             if a.Entryid == eintrag_id
+                hasContent = a.HasContent
+             end
         end
         
         return hasContent
