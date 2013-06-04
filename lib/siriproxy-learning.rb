@@ -34,24 +34,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   
   end
   
-        
-  def showPage(page_id)  
-       response = ask "Sicher " + page_id + "?"
-      
-       if (response =~ /Ja/i)
-          Thread.new {
-            @service.Pages("'#{page_id}'").expand('GetDetails')
-        
-            detaile = @service.execute.first
-        
-            detaile.GetDetails.each do |a|
-              say "#{a.Content}"
-              end
-              request_completed
-            }
-        end
-  end 
-  
+
   
   listen_for /Alle Eintraege suchen/i do
     say "Es werden alle Eintraege gesucht"
@@ -104,31 +87,49 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
        
         showPage(page_id)
   end
+      
+  def showPage(page_id)  
+       response = ask "Sicher " + page_id + "?"
+      
+       if (response =~ /Ja/i)
+          Thread.new {
+            @service.Pages("'#{page_id}'").expand('GetDetails')
+        
+            detaile = @service.execute.first
+        
+            detaile.GetDetails.each do |a|
+              say "#{a.Content}"
+              end
+              request_completed
+            }
+        end
+  end 
   
+  def remove_zeros(eintraege)
+        eintraege.each do |c|
+        laenge = 0
+        loop do
+            if c.Entryid[laenge] == "0"
+               laenge = laenge + 1
+            else
+               c.Entryid = c.Entryid[laenge..8]
+               break
+            end
+         end
+      end
+  end
   
   listen_for /Alle Inhalte/i do
-    
- 
+
         start_connection
         
         @service.Pages.filter("Parent eq '0'")
         @kopf_eintraege = @service.execute
         
         say "Folgende Kopfeintraege stehen zur Verfuegung"
-        
-        @kopf_eintraege.each do |c|
-          laenge = 0
-          loop do
-              if c.Entryid[laenge] == "0"
-                 laenge = laenge + 1
-              else
-                 c.Entryid = c.Entryid[laenge..8]
-                 break
-              end
-           end
-        end
        
-        
+        remove_zeros(@kopf_eintraege)
+          
         @kopf_eintraege.each do |c|
               say "#{c.Name} mit der ID : #{c.Entryid}"
         end
@@ -136,7 +137,6 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         response_id = ask "Zu welcher ID möchten Sie mehr Informationen?"
         
         @kopf_eintraege.each do |eintrag|
-                 say "Response id #{response_id} zu #{eintrag.Entryid}  "
                if response_id == eintrag.Entryid
                      if eintrag.HasContent == "true" 
                          response = ask "Es liegt ein Content vor oder doch Unterkapitel anzeigen lassen?"  
