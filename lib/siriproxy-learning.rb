@@ -142,9 +142,11 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   
     
   def getContent(page_id)        
-
+        
+        rContent = ""
+        
         @service.Pages("'#{page_id}'").expand('GetDetails')
-    
+        
         content = @service.execute.first
     
         content.GetDetails.each do |a|
