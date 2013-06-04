@@ -100,18 +100,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
          end
       end
   end
-  
-  def showPage(page_id)        
 
-        @service.Pages("'#{page_id}'").expand('GetDetails')
-    
-        detaile = @service.execute.first
-    
-        detaile.GetDetails.each do |a|
-          say "#{a.Content}"
-          end
-    
-  end 
   
   def checkIfSubPages(eintrag_id)
     
@@ -129,35 +118,55 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   end
   
   def getSubPages(eintrag_id)
-    
+      @service.Pages("'#{eintrag_id}'").expand('GetDetails').expand('GetDetails/GetSubpages')
+      
+      subPages = @service.execute.first
+      
+      return subPages.GetDetails
   end 
   
   def checkIfContent(eintrag_id)
     
         hasContent = "false"
         @service.Pages
-        @eintraege = @service.execute
+        eintraege = @service.execute
 
-         @eintraege.each do |c|
-                 if c.Entryid == eintrag_id
+        eintraege.each do |c|
+            if c.Entryid == eintrag_id
                 hasContent = c.HasContent
-             end
-         end
+            end
+        end
 
         return hasContent
   end
   
-  listen_for /check ([0-9,]*[0-9])/i do |page_id|
     
-        start_connection
-        
-        subPage = checkIfSubPages(page_id)
-        say "Subpages " + subPage
-        
-        _content = checkIfContent(page_id)
-        say "Content " + _content
+  def getContent(page_id)        
 
-       
+        @service.Pages("'#{page_id}'").expand('GetDetails')
+    
+        content = @service.execute.first
+    
+        content.GetDetails.each do |a|
+           rContent = a.Content
+          end
+        
+        return rContent
+    
+  end 
+  
+  listen_for /check ([0-9,]*[0-9])/i do |page_id|
+         
+        checkContent = getContent(page_id)
+        say checkContent
+        
+        checkSubPages = getSubPages(page_id)
+        
+        checkSubPages.each do |sub|
+           say "Entryid : #{sub.Entryid} "
+
+          end
+        
   end
   
   listen_for /Alle Inhalte/i do
