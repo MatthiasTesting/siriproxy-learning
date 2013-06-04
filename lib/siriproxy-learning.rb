@@ -136,6 +136,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         response_id = ask "Zu welcher ID möchten Sie mehr Informationen?"
         
         @kopf_eintraege.each do |eintrag|
+                 say "Response id #{response_id} zu #{eintrag.Entryid}  "
                if response_id == eintrag.Entryid
                      if eintrag.HasContent == true 
                          response = ask "Es liegt ein Content vor oder doch Unterkapitel anzeigen lassen?"  
@@ -153,8 +154,8 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                           end
                        
                      elsif eintrag.HasContent == false
-                        response = ask "Es liegt kein Content, folgende Unterkapitel stehen aber zur Verfügung?"  
-                          
+                           say "Kein Content"          
+ 
                      end
                       
               
