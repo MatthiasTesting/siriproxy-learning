@@ -141,11 +141,11 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   end
   
     
-  def getContent(page_id)        
+  def getContent(eintrag_id)        
         
         rContent = ""
         
-        @service.Pages("'#{page_id}'").expand('GetDetails')
+        @service.Pages("'#{eintrag_id}'").expand('GetDetails')
         
         content = @service.execute.first
     
@@ -180,6 +180,22 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         
         @kopf_eintraege.each do |eintrag|
                if response_id == eintrag.Entryid
+                 
+               hasContent = checkIfContent(eintrag.Entryid)
+               hasSubpages = checkIfSubPages(eintrag.Entryid)
+               
+               say "Content " + hasContent + " Subpages: " + hasSubPages
+               
+               if hasContent == "true" && hasSubpages == "true"
+                  say "beides"
+               elsif hasContent == "false" && hasSubpages == "true"
+                  say "nur sub"
+               elsif hasContent == "true" && hasSubpages == "false"
+                  say "nur content"
+               else   
+                  say "beides nicht"
+               end
+               
                     # Content
                     
                     
