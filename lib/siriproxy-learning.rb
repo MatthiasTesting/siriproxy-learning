@@ -215,13 +215,13 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                   response = ask "Es gibt nur Unterkapitel. Soll Ich diese anzeigen lassen?"  
 
                   if (response =~ /Ja/i) 
-                     @kopf_eintraege = getSubPages(eintrag.Entryid)
-                     @kopf_eintraege.each do |c|
+                     pages_temp = getSubPages(eintrag.Entryid)
+                     pages_temp.each do |c|
                         say "#{c.Name} mit der ID : #{c.Entryid}"
                      end
    
                      response = ask "Welchen?"  
-                     szenario(response)
+                     szenario(response, pages_temp)
                   end
                else   
                   say "beides nicht"
