@@ -156,7 +156,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 
   end
 
-def szenario2(eintrag_id)
+def start_all_entries(eintrag_id)
 
 
      hasContent = checkIfContent(eintrag_id)
@@ -179,7 +179,7 @@ def szenario2(eintrag_id)
              end
              
              response = ask "Welchen?"  
-             return szenario2(response)
+             return start_all_entries(response)
          end
            
      elsif hasContent == "false" && hasSubPages == "true"
@@ -191,13 +191,13 @@ def szenario2(eintrag_id)
                            end
          
          response = ask "Welchen?"  
-         return szenario2(response)
+         return start_all_entries(response)
              
      elsif hasContent == "true" && hasSubPages == "false"
           content = getContent(eintrag_id)
           say content
      else   
-        say "beides nicht"
+        say "Es liegen"
      end
               
    
@@ -220,62 +220,10 @@ def szenario2(eintrag_id)
         
         response_id = ask "Zu welcher ID möchten Sie mehr Informationen?"
         
-        szenario2(response_id)
+        start_all_entries(response_id)
    
         request_completed
        
-  end
-  
-  def szenario(eintrag_id, pages)
-       say "Test"
-       pages.each do |eintrag|
-               say "#{eintrag_id} und #{eintrag.Entryid}"
-               if eintrag_id == eintrag.Entryid
-                
-               hasContent = checkIfContent(eintrag.Entryid)
-               hasSubPages = checkIfSubPages(eintrag.Entryid)
-               
-               say "Content  " + hasContent  + " Subpages :  + " + hasSubPages
-               
-               if hasContent == "true" && hasSubPages == "true"
-                   response = ask "Es gibt einen Content und Unterkapitel. Was hätten Sie gerne?"  
-                   
-                   if (response =~ /Content/i) 
-                     content = getContent(eintrag.Entryid)
-                     say content
-                     break
-                   elsif (response =~ /Unterkapitel/i)
-                     @pages = getSubPages(eintrag.Entryid)
-                     say "#{@pages}"
-                     @pages.each do |c|
-                        say "#{c.Name} mit der ID : #{c.Entryid}"
-                     end
-                     
-                     response = ask "Welchen?"  
-                     return szenario(response, pages_temp)
-                   end
-                   
-               elsif hasContent == "false" && hasSubPages == "true"
-                  response = ask "Es gibt nur Unterkapitel. Soll Ich diese anzeigen lassen?"  
-
-                  if (response =~ /Ja/i) 
-                     say "#{eintrag_id}"
-                     @pages = getSubPages(eintrag_id)
-                     pages = remove_zeros(@pages)
-
-                     pages.each do |c|
-                        say "#{c.Name} mit der ID : #{c.Entryid}"
-                     end
-   
-                     response = ask "Welchen?"  
-                     return szenario(response, pages)
-                  end
-               else   
-                  say "beides nicht"
-               end
-              end
-        end
-    
   end
   
   end
