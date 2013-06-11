@@ -114,7 +114,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 
   
   def checkIfContent(eintrag_id)
-    
+        hasContent = "false"
         @service.Pages
         eintraege = @service.execute
         eintraege_temp = remove_zeros(eintraege)
