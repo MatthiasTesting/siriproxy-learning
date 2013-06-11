@@ -92,6 +92,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
       
 
   def remove_zeros(eintraege)
+        say "#{eintraege}"
         eintraege.each do |c|
         laenge = 0
         loop do
