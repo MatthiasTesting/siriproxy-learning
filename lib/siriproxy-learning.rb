@@ -187,7 +187,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   def szenario(eintrag_id, pages)
        say "Test"
        pages.each do |eintrag|
-               say eintrag_id + " " + eintrag.Entryid
+               say "#{eintrag_id} und #{eintrag.Entryid}"
                if eintrag_id == eintrag.Entryid
                 
                hasContent = checkIfContent(eintrag.Entryid)
