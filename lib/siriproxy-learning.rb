@@ -173,8 +173,8 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         @kopf_eintraege = @service.execute
         
         say "Folgende Kopfeintraege stehen zur Verfuegung"
-       
-        kopfeintraege = remove_zeros(@kopf_eintraege)
+        kopf_temp = @kopf_eintraege
+        kopfeintraege = remove_zeros(kopf_temp)
           
         kopfeintraege.each do |c|
               say "#{c.Name} mit der ID : #{c.Entryid}"
