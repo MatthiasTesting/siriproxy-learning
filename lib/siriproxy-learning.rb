@@ -79,21 +79,8 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
           request_completed
   end
   
-  listen_for /Nummer ([0-9,]*[0-9])/i do |page_id|
-    
-        start_connection
-
-        hasContent = checkIfContent(page_id)
-        hasSubPages = checkIfSubPages(page_id)
-         
-        say "Content  " + hasContent  + " Subpages :  + " + hasSubPages
-
-  end
-      
-
   def remove_zeros(eintraege)
-        temp = eintraege
-        temp.each do |c|
+      eintraege.each do |c|
         laenge = 0
         loop do
             if c.Entryid[laenge] == "0"
@@ -144,7 +131,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   def getSubPages(eintrag_id)
       @service.Pages("'#{eintrag_id}'").expand('GetDetails').expand('GetDetails/GetSubpages')
       
-      subPages = @service.execute.first
+      subPages = @service.execute
       
       return subPages.GetDetails
   end 
@@ -155,7 +142,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         
         @service.Pages("'#{eintrag_id}'").expand('GetDetails')
         
-        content = @service.execute.first
+        content = @service.execute
     
         content.GetDetails.each do |a|
            rContent = a.Content
@@ -164,6 +151,78 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         return rContent
     
   end 
+  
+  
+  
+  listen_for /Nummer ([0-9,]*[0-9])/i do |page_id|
+    
+        start_connection
+        
+        @service.Pages.filter("Parent eq '0'")
+        @kopf_eintraege = @service.execute
+        
+        say "Folgende Kopfeintraege stehen zur Verfuegung"
+        kopfeintraege = remove_zeros(@kopf_eintraege)
+          
+        kopfeintraege.each do |c|
+              say "#{c.Name} mit der ID : #{c.Entryid}"
+        end
+        
+        response_id = ask "Zu welcher ID möchten Sie mehr Informationen?"
+        
+        szenario2(response_id)
+   
+        request_completed
+
+  end
+
+def szenario2(eintrag_id)
+       say "Test"
+
+               hasContent = checkIfContent(eintrag.Entryid)
+               hasSubPages = checkIfSubPages(eintrag.Entryid)
+               
+               say "Content  " + hasContent  + " Subpages :  + " + hasSubPages
+               
+               if hasContent == "true" && hasSubPages == "true"
+                   response = ask "Es gibt einen Content und Unterkapitel. Was hätten Sie gerne?"  
+                   
+                   if (response =~ /Content/i) 
+                     content = getContent(eintrag.Entryid)
+                     say content
+                     break
+                   elsif (response =~ /Unterkapitel/i)
+                     @pages = getSubPages(eintrag.Entryid)
+                     say "#{@pages}"
+                     @pages.each do |c|
+                        say "#{c.Name} mit der ID : #{c.Entryid}"
+                     end
+                     
+                     response = ask "Welchen?"  
+                     return szenario(response, pages_temp)
+                   end
+                   
+               elsif hasContent == "false" && hasSubPages == "true"
+                  response = ask "Es gibt nur Unterkapitel. Soll Ich diese anzeigen lassen?"  
+
+                  if (response =~ /Ja/i) 
+                     say "#{eintrag_id}"
+                     @pages = getSubPages(eintrag_id)
+                     pages = remove_zeros(@pages)
+
+                     pages.each do |c|
+                        say "#{c.Name} mit der ID : #{c.Entryid}"
+                     end
+   
+                     response = ask "Welchen?"  
+                     return szenario(response, pages)
+                  end
+               else   
+                  say "beides nicht"
+               end
+              end
+    
+  end
 
   listen_for /Alle Inhalte/i do
 
@@ -187,7 +246,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
        
   end
   
-  def szenario(eintrag_id, pages)
+  def szenario2(eintrag_id, pages)
        say "Test"
        pages.each do |eintrag|
                say "#{eintrag_id} und #{eintrag.Entryid}"
