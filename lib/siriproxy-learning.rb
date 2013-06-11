@@ -92,8 +92,8 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
       
 
   def remove_zeros(eintraege)
-   
-        eintraege.each do |c|
+        temp = eintraege
+        temp.each do |c|
         laenge = 0
         loop do
             if c.Entryid[laenge] == "0"
