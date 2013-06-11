@@ -190,7 +190,7 @@ def szenario2(eintrag_id)
                    if (response =~ /Content/i) 
                      content = getContent(eintrag.Entryid)
                      say content
-                     break
+                     
                    elsif (response =~ /Unterkapitel/i)
                      @pages = getSubPages(eintrag.Entryid)
                      say "#{@pages}"
