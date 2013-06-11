@@ -82,8 +82,12 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   listen_for /Nummer ([0-9,]*[0-9])/i do |page_id|
     
         start_connection
-       
-        showPage(page_id)
+
+        hasContent = checkIfContent(page_id)
+         hasSubPages = checkIfSubPages(page_id)
+         
+          say "Content + " hasContent  + " Subpages :  + " hasSubPages
+
   end
       
 
@@ -104,6 +108,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   
   def checkIfSubPages(eintrag_id)
     
+        hasSubPages = "false"
         @service.Pages("'#{eintrag_id}'").expand('GetDetails')
     
         page = @service.execute.first
@@ -112,14 +117,14 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
              hasSubPages = a.Has_Subpages
         end
         
-        returnSubPages = hasSubPages
+        return hasSubPages
                 
   end
 
   
   def checkIfContent(eintrag_id)
     
-        hasContent = ""
+        hasContent = "false"
         @service.Pages
         eintraege = @service.execute
 
@@ -128,7 +133,6 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                 hasContent = c.HasContent
             end
         end
-        say hasContent + "und " + eintrag_id
         return hasContent
   end
   
@@ -156,7 +160,6 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         return rContent
     
   end 
-  
 
   listen_for /Alle Inhalte/i do
 
@@ -175,14 +178,21 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         
         response_id = ask "Zu welcher ID möchten Sie mehr Informationen?"
         
-        
-        @kopf_eintraege.each do |eintrag|
-               if response_id == eintrag.Entryid
+        szenario(response_id)
+   
+        request_completed
+       
+  end
+  
+  def szenario(eintrag_id)
+      
+       @kopf_eintraege.each do |eintrag|
+               if eintrag_id == eintrag.Entryid
                 
                hasContent = checkIfContent(eintrag.Entryid)
-               hasSubPages = "false"#checkIfSubPages(eintrag.Entryid)
+               hasSubPages = checkIfSubPages(eintrag.Entryid)
                
-               say "Content #{hasContent}  : Subpages :  #{hasSubPages}  "
+               say "Content + " hasContent  + " Subpages :  + " hasSubPages
                
                if hasContent == "true" && hasSubPages == "true"
                    response = ask "Es gibt einen Content und Unterkapitel. Was hätten Sie gerne?"  
@@ -190,40 +200,37 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                    if (response =~ /Content/i) 
                      content = getContent(eintrag.Entryid)
                      say content
+                     break
                    elsif (response =~ /Unterkapitel/i)
-                     sub = getSubPages(eintrag.Entryid)
-                     sub.each do |c|
+                     @kopf_eintraege = getSubPages(eintrag.Entryid)
+                     @kopf_eintraege.each do |c|
                         say "#{c.Name} mit der ID : #{c.Entryid}"
                      end
+                     
+                     response = ask "Welchen?"  
+                     szenario(response)
                    end
                    
                elsif hasContent == "false" && hasSubPages == "true"
                   response = ask "Es gibt nur Unterkapitel. Soll Ich diese anzeigen lassen?"  
 
                   if (response =~ /Ja/i) 
-                     sub = getSubPages(eintrag.Entryid)
-                     sub.each do |c|
+                     @kopf_eintraege = getSubPages(eintrag.Entryid)
+                     @kopf_eintraege.each do |c|
                         say "#{c.Name} mit der ID : #{c.Entryid}"
                      end
+   
+                     response = ask "Welchen?"  
+                     szenario(response)
                   end
-                  
-               elsif hasContent == "true" && hasSubPages == "false"
-                  response = ask "Es liegt nur ein Content vor? Soll Ich diesen abspielen?"  
-                   
-                  if (response =~ /Ja/i) 
-                     content = getContent(eintrag.Entryid)
-                     say content
-                  end
-                  
                else   
                   say "beides nicht"
                end
               end
         end
-        request_completed
-       
+    
   end
-  
+
    listen_for /Alle Inhalte2/i do
 
         start_connection
