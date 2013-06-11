@@ -178,15 +178,15 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         
         response_id = ask "Zu welcher ID möchten Sie mehr Informationen?"
         
-        szenario(response_id)
+        szenario(response_id, @kopf_eintraege)
    
         request_completed
        
   end
   
-  def szenario(eintrag_id)
-      
-       @kopf_eintraege.each do |eintrag|
+  def szenario(eintrag_id, pages)
+       say "Test"
+       pages.each do |eintrag|
                if eintrag_id == eintrag.Entryid
                 
                hasContent = checkIfContent(eintrag.Entryid)
@@ -202,13 +202,13 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                      say content
                      break
                    elsif (response =~ /Unterkapitel/i)
-                     @kopf_eintraege = getSubPages(eintrag.Entryid)
-                     @kopf_eintraege.each do |c|
+                     pages_temp = getSubPages(eintrag.Entryid)
+                     pages_temp.each do |c|
                         say "#{c.Name} mit der ID : #{c.Entryid}"
                      end
                      
                      response = ask "Welchen?"  
-                     szenario(response)
+                     szenario(response, pages_temp)
                    end
                    
                elsif hasContent == "false" && hasSubPages == "true"
@@ -297,8 +297,5 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         request_completed
        
   end
-  
-  
-
   
   end
