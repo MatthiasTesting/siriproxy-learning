@@ -175,7 +175,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
              elsif (response =~ /Unterkapitel/i)
                  @pages = getSubPages(eintrag_id)
                    
-                 showPagesWithContentAndID(@pages)
+                 showSubPagesWithContentAndID(@pages)
                  
                  response = ask "Welchen?"  
                  return start_all_entries(response)
@@ -185,7 +185,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
          
              @pages = getSubPages(eintrag_id)
             
-             showPagesWithContentAndID(@pages)
+             showSubPagesWithContentAndID(@pages)
              
              response = ask "Welchen?"  
              return start_all_entries(response)
@@ -210,6 +210,24 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
          end
      end
      
+     def showSubPagesWithContentAndID(page)
+         page.GetDetails.each do |c|
+            laenge = 0
+            loop do
+                if c.Entryid[laenge] == "0"
+                   laenge = laenge + 1
+                else
+                   c.Entryid = c.Entryid[laenge..8]
+                   break
+                end
+             end
+          end
+         page.GetDetails.each do |c|
+              say "#{c.Name} mit der ID : #{c.Entryid}"
+         end
+     end
+  
+
    
  
  end
