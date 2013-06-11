@@ -204,6 +204,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
      end
      
      def showPagesWithContentAndID(page)
+         remove_zeros(page)
          page.each do |c|
               say "#{c.Name} mit der ID : #{c.Entryid}"
          end
