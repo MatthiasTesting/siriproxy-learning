@@ -199,7 +199,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
      end
     
      def showContent(_id) 
-         content = getContent(eintrag_id)
+         content = getContent(_id)
          say content
      end
      
