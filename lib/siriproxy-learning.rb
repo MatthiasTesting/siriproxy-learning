@@ -156,23 +156,11 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   
   listen_for /Nummer ([0-9,]*[0-9])/i do |page_id|
     
-        start_connection
+        hasContent = checkIfContent(page_id)
+        hasSubPages = checkIfSubPages(page_id)
         
-        @service.Pages.filter("Parent eq '0'")
-        @kopf_eintraege = @service.execute
-        
-        say "Folgende Kopfeintraege stehen zur Verfuegung"
-        kopfeintraege = remove_zeros(@kopf_eintraege)
-          
-        kopfeintraege.each do |c|
-              say "#{c.Name} mit der ID : #{c.Entryid}"
-        end
-        
-        response_id = ask "Zu welcher ID möchten Sie mehr Informationen?"
-        
-        szenario2(response_id)
-   
-        request_completed
+        say "hat Content " + hasContent
+        say "hat pages  " + hasSubPages
 
   end
 
@@ -182,7 +170,7 @@ def szenario2(eintrag_id)
                hasContent = checkIfContent(eintrag_id)
                hasSubPages = checkIfSubPages(eintrag_id)
                
-               say "Content  " + hasContent  + " Subpages :  + " + hasSubPages
+               say "Content  " + hasContent  + " Subpages :  " + hasSubPages
                
                if hasContent == "true" && hasSubPages == "true"
                    response = ask "Es gibt einen Content und Unterkapitel. Was hätten Sie gerne?"  
