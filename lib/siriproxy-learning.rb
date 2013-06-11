@@ -175,11 +175,14 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         
         response_id = ask "Zu welcher ID möchten Sie mehr Informationen?"
         
+        
         @kopf_eintraege.each do |eintrag|
                if response_id == eintrag.Entryid
                 
                hasContent = checkIfContent(eintrag.Entryid)
                hasSubPages = checkIfSubPages(eintrag.Entryid)
+               
+               say "Content " + hasContent + " : Subpages : " + hasSubPages
                
                if hasContent == "true" && hasSubPages == "true"
                    response = ask "Es gibt einen Content und Unterkapitel. Was hätten Sie gerne?"  
