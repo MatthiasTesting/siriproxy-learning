@@ -151,55 +151,58 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
     
   end 
   
-  
-  
+ 
   listen_for /Nummer ([0-9,]*[0-9])/i do |page_id|
 
   end
 
 def szenario2(eintrag_id)
-       say "Test"
 
-               hasContent = checkIfContent(eintrag_id)
-               hasSubPages = checkIfSubPages(eintrag_id)
+
+     hasContent = checkIfContent(eintrag_id)
+     hasSubPages = checkIfSubPages(eintrag_id)
+     
+     say "Content  " + hasContent  + " Subpages :  " + hasSubPages
+     
+     if hasContent == "true" && hasSubPages == "true"
+         response = ask "Es gibt einen Content und Unterkapitel. Was hätten Sie gerne?"  
+     
+         if (response =~ /Content/i) 
+             content = getContent(eintrag_id)
+             say content
+           
+         elsif (response =~ /Unterkapitel/i)
+             @pages = getSubPages(eintrag_id)
                
-               say "Content  " + hasContent  + " Subpages :  " + hasSubPages
-               
-               if hasContent == "true" && hasSubPages == "true"
-                   response = ask "Es gibt einen Content und Unterkapitel. Was hätten Sie gerne?"  
-                   
-                   if (response =~ /Content/i) 
-                     content = getContent(eintrag_id)
-                     say content
-                     
-                   elsif (response =~ /Unterkapitel/i)
-                     @pages = getSubPages(eintrag_id)
-                     say "#{@pages}"
-                     @pages.each do |c|
-                        say "#{c.Name} mit der ID : #{c.Entryid}"
-                     end
-                     
-                     response = ask "Welchen?"  
-                     return szenario(response, pages_temp)
-                   end
-                   
-               elsif hasContent == "false" && hasSubPages == "true"
+             @pages.each do |c|
+                say "#{c.Name} mit der ID : #{c.Entryid}"
+             end
+             
+             response = ask "Welchen?"  
+             return szenario2(response)
+         end
+           
+     elsif hasContent == "false" && hasSubPages == "true"
+     
+         @pages = getSubPages(eintrag_id)
+        
+         @pages.each do |c|
+            say "#{c.Name} mit der ID : #{c.Entryid}"
+                           end
          
-                     @pages = getSubPages(eintrag_id)
-
-                     @pages.each do |c|
-                        say "#{c.Name} mit der ID : #{c.Entryid}"
-                     end
-   
-                     response = ask "Welchen?"  
-                     return szenario2(response)
-               
-               else   
-                  say "beides nicht"
-               end
+         response = ask "Welchen?"  
+         return szenario2(response)
+             
+     elsif hasContent == "true" && hasSubPages == "false"
+          content = getContent(eintrag_id)
+          say content
+     else   
+        say "beides nicht"
+     end
               
-    
-  end
+   
+   
+ end
 
   listen_for /Alle Inhalte/i do
 
@@ -273,73 +276,6 @@ def szenario2(eintrag_id)
               end
         end
     
-  end
-
-   listen_for /Alle Inhalte2/i do
-
-        start_connection
-        
-        @service.Pages.filter("Parent eq '0'")
-        @kopf_eintraege = @service.execute
-        
-        say "Folgende Kopfeintraege stehen zur Verfuegung"
-       
-        remove_zeros(@kopf_eintraege)
-          
-        @kopf_eintraege.each do |c|
-              say "#{c.Name} mit der ID : #{c.Entryid}"
-        end
-        
-        response_id = ask "Zu welcher ID möchten Sie mehr Informationen?"
-        
-        @kopf_eintraege.each do |eintrag|
-               if response_id == eintrag.Entryid
-                     
-                @service.Pages("'#{eintrag.Entryid}'").expand('GetDetails')
-         
-                detail = @service.execute.first            
-                detail.GetDetails.each do |a|
-                  hasSubPages = a.Has_Subpages
-                end                
-                     if eintrag.HasContent == "true" && hasSubpages == "true"
-
-                         response = ask "Es liegt ein Content vor oder doch Unterkapitel anzeigen lassen?"  
-                         if (response =~ /Content/i) 
-                           
-                             showPage(eintrag.Entryid)
-
-                         elsif (response =~ /Unterkapitel/i) 
-                              @service.Pages("'#{eintrag.Entryid}'").expand('GetDetails').expand('GetDetails/GetSubpages')
-                         
-                              unterkapitel = @service.execute.first
-                              unterkapitel.GetDetails.each do |b|
-                                  say "Folgende Unterkapitel liegen vor #{b.Entryid}"
-                              end
-                          end
-                     elsif eintrag.HasContent == "false" && hasSubPages == "true"
-                             
-                             @service.Pages("'#{eintrag.Entryid}'").expand('GetDetails')
-                         
-                              kapitel = @service.execute.first
-                              kapitel.GetDetails.each do |_kapitel|
-                                  if kapitel.Has_Subpages == "true"
-                                      @service.Pages("'#{_kapitel.Entryid}'").expand('GetDetails').expand('GetDetails/GetSubpages')
-                                 
-                                      unterkapitel = @service.execute.first
-                                      unterkapitel.GetDetails.each do |_unterkapite|
-                                          say "Folgende Unterkapitel liegen vor #{_unterkapite.Entryid}"
-                                      end
-                                  end  
-                              end
-                                
-                           
-                     end
-                      
-              
-              end
-        end
-        request_completed
-       
   end
   
   end
