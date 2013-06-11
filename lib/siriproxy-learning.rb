@@ -182,9 +182,20 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                hasSubPages = checkIfSubPages(eintrag.Entryid)
                
                if hasContent == "true" && hasSubPages == "true"
-                  say "beides"
+                   response = ask "Es gibt einen Content und Unterkapitel. Was hätten Sie gerne?"  
+                   
+                   if (response =~ /Content/i) 
+                     content = getContent(eintrag.Entryid)
+                     say content
+                   elsif (response =~ /Unterkapitel/i)
+                     sub = getSubPages(eintrag.Entryid)
+                     sub.each do |c|
+                        say "#{c.Name} mit der ID : #{c.Entryid}"
+                     end
+                   end
+                   
                elsif hasContent == "false" && hasSubPages == "true"
-                  response = ask "Es gibt nur Unterkapitel vor? Soll Ich diese anzeigen lassen?"  
+                  response = ask "Es gibt nur Unterkapitel. Soll Ich diese anzeigen lassen?"  
 
                   if (response =~ /Ja/i) 
                      sub = getSubPages(eintrag.Entryid)
@@ -204,18 +215,6 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                else   
                   say "beides nicht"
                end
-               
-                    # Content
-                    
-                    
-                    
-                    # schleife bis content abgespielt oder Unterkapitel keine mehr vorhanden sind
-                    # Unterkapitel       
-              
-                        # Content?
-                        
-                        # UNterkapitel?
-              
               end
         end
         request_completed
