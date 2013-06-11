@@ -220,7 +220,7 @@ def szenario2(eintrag_id)
                else   
                   say "beides nicht"
                end
-              end
+              
     
   end
 
