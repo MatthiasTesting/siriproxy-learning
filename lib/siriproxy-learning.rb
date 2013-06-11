@@ -9,6 +9,8 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
       def initialize(config)
         @kopf_eintraege = ""
         @kopf_count = 0
+        @eintraege_count = 0
+        @service = ""
         @pages = ""
       end
     
@@ -42,11 +44,11 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
               
               if @eintraege_count > 0
                   @service.Pages
-                  @eintraege = @service.execute
+                  @pages = @service.execute
     
                   say "Folgende Eintraege stehen zur Verfuegung"
     
-                  showPagesWithContentAndID(@eintraege)
+                  showPagesWithContentAndID(@pages)
 
               elsif @eintraege_count == 0
                   say "Keine Einträge vorhanden"
