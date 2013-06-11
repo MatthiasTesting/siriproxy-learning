@@ -113,14 +113,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         end
                 
   end
-  
-  def getSubPages(eintrag_id)
-      @service.Pages("'#{eintrag_id}'").expand('GetDetails').expand('GetDetails/GetSubpages')
-      
-      subPages = @service.execute.first
-      
-      return subPages.GetDetails
-  end 
+
   
   def checkIfContent(eintrag_id)
     
@@ -134,7 +127,15 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         end
   end
   
-    
+     
+  def getSubPages(eintrag_id)
+      @service.Pages("'#{eintrag_id}'").expand('GetDetails').expand('GetDetails/GetSubpages')
+      
+      subPages = @service.execute.first
+      
+      return subPages.GetDetails
+  end 
+  
   def getContent(eintrag_id)        
         
         rContent = ""
@@ -176,7 +177,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                hasContent = checkIfContent(eintrag.Entryid)
                hasSubPages = checkIfSubPages(eintrag.Entryid)
                
-               say "Content " + hasContent + " : Subpages : " + hasSubPages
+               say "Content #{hasContent}  : Subpages :  #{hasSubPages}  "
                
                if hasContent == "true" && hasSubPages == "true"
                    response = ask "Es gibt einen Content und Unterkapitel. Was hätten Sie gerne?"  
