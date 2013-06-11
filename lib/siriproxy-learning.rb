@@ -84,9 +84,9 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         start_connection
 
         hasContent = checkIfContent(page_id)
-         hasSubPages = checkIfSubPages(page_id)
+        hasSubPages = checkIfSubPages(page_id)
          
-          say "Content + " hasContent  + " Subpages :  + " hasSubPages
+        say "Content  " + hasContent  + " Subpages :  + " + hasSubPages
 
   end
       
@@ -192,7 +192,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                hasContent = checkIfContent(eintrag.Entryid)
                hasSubPages = checkIfSubPages(eintrag.Entryid)
                
-               say "Content + " hasContent  + " Subpages :  + " hasSubPages
+               say "Content  " + hasContent  + " Subpages :  + " + hasSubPages
                
                if hasContent == "true" && hasSubPages == "true"
                    response = ask "Es gibt einen Content und Unterkapitel. Was hätten Sie gerne?"  
