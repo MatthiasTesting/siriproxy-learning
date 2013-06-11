@@ -157,10 +157,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
     
   end 
   
-  listen_for /check ([0-9,]*[0-9])/i do |page_id|        
 
-  end
-  
   listen_for /Alle Inhalte/i do
 
         start_connection
@@ -187,9 +184,23 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                if hasContent == "true" && hasSubPages == "true"
                   say "beides"
                elsif hasContent == "false" && hasSubPages == "true"
-                  say "nur sub"
+                  response = ask "Es gibt nur Unterkapitel vor? Soll Ich diese anzeigen lassen?"  
+
+                  if (response =~ /Ja/i) 
+                     sub = getSubPages(eintrag.Entryid)
+                     sub.each do |c|
+                        say "#{c.Name} mit der ID : #{c.Entryid}"
+                     end
+                  end
+                  
                elsif hasContent == "true" && hasSubPages == "false"
-                  say "nur content"
+                  response = ask "Es liegt nur ein Content vor? Soll Ich diesen abspielen?"  
+                   
+                  if (response =~ /Ja/i) 
+                     content = getContent(eintrag.Entryid)
+                     say content
+                  end
+                  
                else   
                   say "beides nicht"
                end
