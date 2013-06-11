@@ -111,6 +111,8 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         page.GetDetails.each do |a|
              hasSubPages = a.Has_Subpages
         end
+        
+        returnSubPages = hasSubPages
                 
   end
 
@@ -125,6 +127,8 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                 hasContent = c.HasContent
             end
         end
+        
+        returnContent = hasContent
   end
   
      
