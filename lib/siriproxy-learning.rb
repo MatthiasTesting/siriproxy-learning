@@ -154,12 +154,6 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   
   
   listen_for /Nummer ([0-9,]*[0-9])/i do |page_id|
-        start_connection
-        hasContent = checkIfContent(page_id)
-        hasSubPages = checkIfSubPages(page_id)
-        
-        say "hat Content " + hasContent
-        say "hat pages  " + hasSubPages
 
   end
 
@@ -190,10 +184,7 @@ def szenario2(eintrag_id)
                    end
                    
                elsif hasContent == "false" && hasSubPages == "true"
-                  response = ask "Es gibt nur Unterkapitel. Soll Ich diese anzeigen lassen?"  
-
-                  if (response =~ /Ja/i) 
-                     say "#{eintrag_id}"
+         
                      @pages = getSubPages(eintrag_id)
 
                      @pages.each do |c|
@@ -202,7 +193,7 @@ def szenario2(eintrag_id)
    
                      response = ask "Welchen?"  
                      return szenario2(response)
-                  end
+               
                else   
                   say "beides nicht"
                end
@@ -226,7 +217,7 @@ def szenario2(eintrag_id)
         
         response_id = ask "Zu welcher ID möchten Sie mehr Informationen?"
         
-        szenario(response_id, kopfeintraege)
+        szenario2(response_id)
    
         request_completed
        
