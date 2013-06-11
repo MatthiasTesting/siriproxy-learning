@@ -180,7 +180,8 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         
         @kopf_eintraege.each do |eintrag|
                if response_id == eintrag.Entryid
-                 
+               hasContent = "false"
+               hasSubpages = "false"
                hasContent = checkIfContent(eintrag.Entryid)
                hasSubpages = checkIfSubPages(eintrag.Entryid)
                
