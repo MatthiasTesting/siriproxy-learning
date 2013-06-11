@@ -92,7 +92,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
       
 
   def remove_zeros(eintraege)
-        say "#{eintraege}"
+   
         eintraege.each do |c|
         laenge = 0
         loop do
@@ -104,6 +104,9 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
             end
          end
       end
+      
+      removed_nulls = eintraege
+      return removed_nulls
   end
 
   
@@ -171,15 +174,15 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         
         say "Folgende Kopfeintraege stehen zur Verfuegung"
        
-        remove_zeros(@kopf_eintraege)
+        kopfeintraege = remove_zeros(@kopf_eintraege)
           
-        @kopf_eintraege.each do |c|
+        kopfeintraege.each do |c|
               say "#{c.Name} mit der ID : #{c.Entryid}"
         end
         
         response_id = ask "Zu welcher ID möchten Sie mehr Informationen?"
         
-        szenario(response_id, @kopf_eintraege)
+        szenario(response_id, kopfeintraege)
    
         request_completed
        
@@ -218,16 +221,16 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                   response = ask "Es gibt nur Unterkapitel. Soll Ich diese anzeigen lassen?"  
 
                   if (response =~ /Ja/i) 
+                     say "#{eintrag_id}"
+                     pages_temp = getSubPages(eintrag_id)
+                     pages = remove_zeros(pages_temp)
 
-                     pages_temp = getSubPages(eintrag.Entryid)
-                     remove_zeros(pages_temp)
-
-                     pages_temp.each do |c|
+                     pages.each do |c|
                         say "#{c.Name} mit der ID : #{c.Entryid}"
                      end
    
                      response = ask "Welchen?"  
-                     szenario(response, pages_temp)
+                     szenario(response, pages)
                   end
                else   
                   say "beides nicht"
