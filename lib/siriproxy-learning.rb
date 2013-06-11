@@ -104,7 +104,6 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   
   def checkIfSubPages(eintrag_id)
     
-        hasSubPages = "false"
         @service.Pages("'#{eintrag_id}'").expand('GetDetails')
     
         page = @service.execute.first
@@ -127,7 +126,6 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   
   def checkIfContent(eintrag_id)
     
-        hasContent = "false"
         @service.Pages
         eintraege = @service.execute
 
