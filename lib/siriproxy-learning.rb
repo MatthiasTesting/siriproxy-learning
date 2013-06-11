@@ -208,14 +208,13 @@ def szenario2(eintrag_id)
                   if (response =~ /Ja/i) 
                      say "#{eintrag_id}"
                      @pages = getSubPages(eintrag_id)
-                     pages = remove_zeros(@pages)
 
                      pages.each do |c|
                         say "#{c.Name} mit der ID : #{c.Entryid}"
                      end
    
                      response = ask "Welchen?"  
-                     return szenario(response, pages)
+                     return szenario2(response)
                   end
                else   
                   say "beides nicht"
