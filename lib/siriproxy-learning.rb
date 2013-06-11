@@ -187,7 +187,6 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   
   def szenario(eintrag_id, pages)
        say "Test"
-       remove_zeros(pages)
        pages.each do |eintrag|
                say "#{eintrag_id} und #{eintrag.Entryid}"
                if eintrag_id == eintrag.Entryid
@@ -219,7 +218,10 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                   response = ask "Es gibt nur Unterkapitel. Soll Ich diese anzeigen lassen?"  
 
                   if (response =~ /Ja/i) 
+
                      pages_temp = getSubPages(eintrag.Entryid)
+                     remove_zeros(pages_temp)
+
                      pages_temp.each do |c|
                         say "#{c.Name} mit der ID : #{c.Entryid}"
                      end
