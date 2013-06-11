@@ -134,8 +134,6 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                 hasContent = c.HasContent
             end
         end
-
-        return hasContent
   end
   
     
