@@ -186,6 +186,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   
   def szenario(eintrag_id, pages)
        say "Test"
+       remove_zeros(pages)
        pages.each do |eintrag|
                say "#{eintrag_id} und #{eintrag.Entryid}"
                if eintrag_id == eintrag.Entryid
