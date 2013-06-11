@@ -146,15 +146,14 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
       listen_for /Alle Inhalte/i do
     
             start_connection
-            
+           
             @service.Pages.filter("Parent eq '0'")
             @kopf_eintraege = @service.execute
-            
+
             say "Folgende Kopfeintraege stehen zur Verfuegung"
-            remove_zeros(@kopf_eintraege)
-              
-            showPagesWithContentAndID(@kopfeintraege)
-            
+
+            showPagesWithContentAndID(@kopf_eintraege)
+
             response_id = ask "Zu welcher ID möchten Sie mehr Informationen?"
             
             start_all_entries(response_id)
