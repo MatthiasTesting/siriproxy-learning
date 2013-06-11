@@ -111,9 +111,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         page.GetDetails.each do |a|
              hasSubPages = a.Has_Subpages
         end
-        
-        return hasSubPages
-         
+                
   end
   
   def getSubPages(eintrag_id)
