@@ -180,7 +180,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                if response_id == eintrag.Entryid
                 
                hasContent = checkIfContent(eintrag.Entryid)
-               #hasSubPages = checkIfSubPages(eintrag.Entryid)
+               hasSubPages = "false"#checkIfSubPages(eintrag.Entryid)
                
                say "Content #{hasContent}  : Subpages :  #{hasSubPages}  "
                
