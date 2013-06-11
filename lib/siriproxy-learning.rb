@@ -179,8 +179,8 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 def szenario2(eintrag_id)
        say "Test"
 
-               hasContent = checkIfContent(eintrag.Entryid)
-               hasSubPages = checkIfSubPages(eintrag.Entryid)
+               hasContent = checkIfContent(eintrag_id)
+               hasSubPages = checkIfSubPages(eintrag_id)
                
                say "Content  " + hasContent  + " Subpages :  + " + hasSubPages
                
@@ -188,11 +188,11 @@ def szenario2(eintrag_id)
                    response = ask "Es gibt einen Content und Unterkapitel. Was hätten Sie gerne?"  
                    
                    if (response =~ /Content/i) 
-                     content = getContent(eintrag.Entryid)
+                     content = getContent(eintrag_id)
                      say content
                      
                    elsif (response =~ /Unterkapitel/i)
-                     @pages = getSubPages(eintrag.Entryid)
+                     @pages = getSubPages(eintrag_id)
                      say "#{@pages}"
                      @pages.each do |c|
                         say "#{c.Name} mit der ID : #{c.Entryid}"
