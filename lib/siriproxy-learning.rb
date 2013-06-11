@@ -246,7 +246,7 @@ def szenario2(eintrag_id)
        
   end
   
-  def szenario2(eintrag_id, pages)
+  def szenario(eintrag_id, pages)
        say "Test"
        pages.each do |eintrag|
                say "#{eintrag_id} und #{eintrag.Entryid}"
