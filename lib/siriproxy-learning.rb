@@ -209,7 +209,7 @@ def szenario2(eintrag_id)
                      say "#{eintrag_id}"
                      @pages = getSubPages(eintrag_id)
 
-                     pages.each do |c|
+                     @pages.each do |c|
                         say "#{c.Name} mit der ID : #{c.Entryid}"
                      end
    
