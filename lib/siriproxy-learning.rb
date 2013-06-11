@@ -117,7 +117,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
     
         hasContent = "false"
         @service.Pages
-        eintraege = @service.execute.first
+        eintraege = @service.execute
 
         eintraege.each do |c|
             if c.Entryid == eintrag_id
