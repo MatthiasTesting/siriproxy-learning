@@ -119,6 +119,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   
   def checkIfContent(eintrag_id)
     
+        hasContent = ""
         @service.Pages
         eintraege = @service.execute
 
@@ -127,8 +128,8 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                 hasContent = c.HasContent
             end
         end
-        
-        returnContent = hasContent
+        say hasContent + "und " + eintrag_id
+        return hasContent
   end
   
      
@@ -179,7 +180,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                if response_id == eintrag.Entryid
                 
                hasContent = checkIfContent(eintrag.Entryid)
-               hasSubPages = checkIfSubPages(eintrag.Entryid)
+               #hasSubPages = checkIfSubPages(eintrag.Entryid)
                
                say "Content #{hasContent}  : Subpages :  #{hasSubPages}  "
                
