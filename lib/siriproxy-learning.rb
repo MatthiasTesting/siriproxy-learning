@@ -155,7 +155,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   
   
   listen_for /Nummer ([0-9,]*[0-9])/i do |page_id|
-    
+        start_connection
         hasContent = checkIfContent(page_id)
         hasSubPages = checkIfSubPages(page_id)
         
