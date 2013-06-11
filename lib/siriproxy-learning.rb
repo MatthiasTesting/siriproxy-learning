@@ -9,7 +9,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   def initialize(config)
     @kopf_eintraege = ""
     @kopf_count = 0
-    @eintraege_count = 0
+    @pages = ""
   end
 
 
@@ -173,8 +173,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         @kopf_eintraege = @service.execute
         
         say "Folgende Kopfeintraege stehen zur Verfuegung"
-        kopf_temp = @kopf_eintraege
-        kopfeintraege = remove_zeros(kopf_temp)
+        kopfeintraege = remove_zeros(@kopf_eintraege)
           
         kopfeintraege.each do |c|
               say "#{c.Name} mit der ID : #{c.Entryid}"
@@ -207,14 +206,14 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                      say content
                      break
                    elsif (response =~ /Unterkapitel/i)
-                     pages_temp = getSubPages(eintrag.Entryid)
-                     say "#{pages_temp}"
-                     pages_temp.each do |c|
+                     @pages = getSubPages(eintrag.Entryid)
+                     say "#{@pages}"
+                     @pages.each do |c|
                         say "#{c.Name} mit der ID : #{c.Entryid}"
                      end
                      
                      response = ask "Welchen?"  
-                     szenario(response, pages_temp)
+                     return szenario(response, pages_temp)
                    end
                    
                elsif hasContent == "false" && hasSubPages == "true"
@@ -222,15 +221,15 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 
                   if (response =~ /Ja/i) 
                      say "#{eintrag_id}"
-                     pages_temp = getSubPages(eintrag_id)
-                     pages = remove_zeros(pages_temp)
+                     @pages = getSubPages(eintrag_id)
+                     pages = remove_zeros(@pages)
 
                      pages.each do |c|
                         say "#{c.Name} mit der ID : #{c.Entryid}"
                      end
    
                      response = ask "Welchen?"  
-                     szenario(response, pages)
+                     return szenario(response, pages)
                   end
                else   
                   say "beides nicht"
