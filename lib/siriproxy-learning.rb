@@ -187,6 +187,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   def szenario(eintrag_id, pages)
        say "Test"
        pages.each do |eintrag|
+               say eintrag_id + " " + eintrag.Entryid
                if eintrag_id == eintrag.Entryid
                 
                hasContent = checkIfContent(eintrag.Entryid)
@@ -203,6 +204,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                      break
                    elsif (response =~ /Unterkapitel/i)
                      pages_temp = getSubPages(eintrag.Entryid)
+                     say "#{pages_temp}"
                      pages_temp.each do |c|
                         say "#{c.Name} mit der ID : #{c.Entryid}"
                      end
