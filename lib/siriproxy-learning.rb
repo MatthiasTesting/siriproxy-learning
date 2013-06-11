@@ -180,18 +180,20 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         
         @kopf_eintraege.each do |eintrag|
                if response_id == eintrag.Entryid
+                
                hasContent = "false"
-               hasSubpages = "false"
+               hasSubPages = "false"
+               
                hasContent = checkIfContent(eintrag.Entryid)
-               hasSubpages = checkIfSubPages(eintrag.Entryid)
+               hasSubPages = checkIfSubPages(eintrag.Entryid)
                
                say "Content " + hasContent + " Subpages: " + hasSubPages
                
-               if hasContent == "true" && hasSubpages == "true"
+               if hasContent == "true" && hasSubPages == "true"
                   say "beides"
-               elsif hasContent == "false" && hasSubpages == "true"
+               elsif hasContent == "false" && hasSubPages == "true"
                   say "nur sub"
-               elsif hasContent == "true" && hasSubpages == "false"
+               elsif hasContent == "true" && hasSubPages == "false"
                   say "nur content"
                else   
                   say "beides nicht"
