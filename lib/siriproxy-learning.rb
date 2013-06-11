@@ -102,7 +102,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
         hasSubPages = "false"
         @service.Pages("'#{eintrag_id}'").expand('GetDetails')
     
-        page = @service.execute.first
+        page = @service.execute
     
         page.GetDetails.each do |a|
              hasSubPages = a.Has_Subpages
@@ -117,7 +117,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
     
         hasContent = "false"
         @service.Pages
-        eintraege = @service.execute.first
+        eintraege = @service.execute
 
         eintraege.each do |c|
             if c.Entryid == eintrag_id
