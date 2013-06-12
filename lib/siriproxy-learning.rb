@@ -144,6 +144,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
       def getSubPages(_entryId)
           @service.Pages("'#{_entryId}'").expand('GetDetails').expand('GetDetails/GetSubpages')       
           rSubPages = @service.execute.first
+          
 
           return rSubPages.GetDetails
       end 
