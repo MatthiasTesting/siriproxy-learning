@@ -129,10 +129,10 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
           subPages.GetDetails.each do |c|
             laenge = 0
             loop do
-                if c.Entryid[laenge] == "0"
+                if c.GetDetails.Entryid[laenge] == "0"
                    laenge = laenge + 1
                 else
-                   c.Entryid = c.Entryid[laenge..8]
+                   c.GetDetails.Entryid = c.Entryid[laenge..8]
                    break
                 end
              end
