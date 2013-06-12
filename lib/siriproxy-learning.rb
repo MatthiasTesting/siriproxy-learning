@@ -64,20 +64,20 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
       end
       
       listen_for /Alle Inhalte/i do   
-          Thread.new {      
-              start_connection
-               
-              @service.Pages.filter("Parent eq '0'")
-              @kopf_eintraege = @service.execute
-              
-              say "Folgende Kopfeintraege stehen zur Verfuegung"  
-              showPagesWithContentAndID(@kopf_eintraege)
-              
-              response_id = ask "Zu welcher ID möchten Sie mehr Informationen?"        
-              start_all_entries(response_id)
-               
-              request_completed   
-         }
+          
+         start_connection
+          
+         @service.Pages.filter("Parent eq '0'")
+         @kopf_eintraege = @service.execute
+         
+         say "Folgende Kopfeintraege stehen zur Verfuegung"  
+         showPagesWithContentAndID(@kopf_eintraege)
+         
+         response_id = ask "Zu welcher ID möchten Sie mehr Informationen?"        
+         start_all_entries(response_id)
+          
+         request_completed   
+     
       end
            
       def start_connection
