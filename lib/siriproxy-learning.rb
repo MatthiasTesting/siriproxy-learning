@@ -63,7 +63,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
          }
       end
       
-      listen_for /Alle Inhalte/i do   
+      listen_for /alle.*inhalte/i do   
           
          start_connection
           
