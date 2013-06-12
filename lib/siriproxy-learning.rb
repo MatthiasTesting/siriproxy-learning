@@ -132,7 +132,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
           entries = @service.execute
           
           remove_zeros(entries)
-          eintraege.each do |entry|
+          entries.each do |entry|
               if entry.Entryid == _entryId
                   rHasContent = entry.HasContent
               end
