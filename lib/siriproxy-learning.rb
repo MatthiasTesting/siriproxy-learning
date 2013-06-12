@@ -125,7 +125,18 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
       def getSubPages(eintrag_id)
           @service.Pages("'#{eintrag_id}'").expand('GetDetails').expand('GetDetails/GetSubpages')       
           subPages = @service.execute.first
-          remove_zeros(subPages)
+          
+          subPages.GetDetails.each do |c|
+            laenge = 0
+            loop do
+                if c.Entryid[laenge] == "0"
+                   laenge = laenge + 1
+                else
+                   c.Entryid = c.Entryid[laenge..8]
+                   break
+                end
+             end
+          end
           return subPages.GetDetails
       end 
       
