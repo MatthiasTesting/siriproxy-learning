@@ -93,13 +93,13 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
       end
       
       def remove_zeros_forSubPages(eintraege)
-          eintraege.each do |c|
+          eintraege.FullPage.each do |c|
             laenge = 0
             loop do
-                if c.GetDetails.Entryid[laenge] == "0"
+                if c.Entryid[laenge] == "0"
                    laenge = laenge + 1
                 else
-                   c.GetDetails.Entryid = c.Entryid[laenge..8]
+                   c.Entryid = c.Entryid[laenge..8]
                    break
                 end
              end
