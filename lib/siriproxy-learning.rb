@@ -8,7 +8,7 @@ require 'ruby_odata'
 class SiriProxy::Plugin::Learning < SiriProxy::Plugin
       def initialize(config)
           @kopf_eintraege = ""
-          @kopf_count = 0
+          @head_count = 0
           @eintraege_count = 0
           @service = ""
           @pages = ""
@@ -45,17 +45,17 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
           Thread.new {
               start_connection
               @service.Pages.filter("Parent eq '0'").count
-              @kopf_count = @service.execute
+              @head_count = @service.execute
               say "Es werden alle Kopfeintraege gesucht"
                
-              if @kopf_count > 0
+              if @head_count > 0
                   @service.Pages.filter("Parent eq '0'")
                   @kopf_eintraege = @service.execute
               
                   say "Folgende Kopfeintraege stehen zur Verfuegung"
                   showPagesWithContentAndID(@kopf_eintraege)
                
-              elsif @kopf_count == 0
+              elsif @head_count == 0
                   say "Keine Kopfeintraege vorhanden"
               end
                 
@@ -84,14 +84,14 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
           @service = OData::Service.new "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV", { :username => "MAR", :password=> "Bachelor4711." }
       end
       
-      def remove_zeros(eintraege)
-          eintraege.each do |c|
-            laenge = 0
+      def remove_zeros(_entries)
+          _entries.each do |entry|
+            length = 0
             loop do
-                if c.Entryid[laenge] == "0"
-                   laenge = laenge + 1
+                if entry.Entryid[length] == "0"
+                   length = length + 1
                 else
-                   c.Entryid = c.Entryid[laenge..8]
+                   entry.Entryid = entry.Entryid[length..8]
                    break
                 end
              end
@@ -99,68 +99,68 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
       end
 
       
-      def checkIfSubPages(eintrag_id)
-          hasSubPages = "false"
-          @service.Pages("'#{eintrag_id}'").expand('GetDetails')
+      def checkIfSubPages(_entryId)
+          rHasSubPages = "false"
+          @service.Pages("'#{_entryId}'").expand('GetDetails')
           
           page = @service.execute.first
           
-          page.GetDetails.each do |a|
-              hasSubPages = a.Has_Subpages
+          page.GetDetails.each do |p|
+              rHasSubPages = p.Has_Subpages
           end
           
-          return hasSubPages             
+          return rHasSubPages             
       end
       
-      def checkIfContent(eintrag_id)
-          hasContent = "false"
+      def checkIfContent(_entryId)
+          rHasContent = "false"
           
           @service.Pages
-          eintraege = @service.execute
+          entries = @service.execute
           
-          remove_zeros(eintraege)
-          eintraege.each do |c|
-              if c.Entryid == eintrag_id
-                  hasContent = c.HasContent
+          remove_zeros(entries)
+          eintraege.each do |entry|
+              if entry.Entryid == _entryId
+                  rHasContent = entry.HasContent
               end
           end
           
-          return hasContent
+          return rHasContent
       end
         
-      def getSubPages(eintrag_id)
-          @service.Pages("'#{eintrag_id}'").expand('GetDetails').expand('GetDetails/GetSubpages')       
-          subPages = @service.execute.first
+      def getSubPages(_entryId)
+          @service.Pages("'#{_entryId}'").expand('GetDetails').expand('GetDetails/GetSubpages')       
+          rSubPages = @service.execute.first
 
-          return subPages.GetDetails
+          return rSubPages.GetDetails
       end 
       
-      def getContent(eintrag_id)        
+      def getContent(_entryId)        
           rContent = ""
           
-          @service.Pages("'#{eintrag_id}'").expand('GetDetails')
+          @service.Pages("'#{_entryId}'").expand('GetDetails')
           content = @service.execute.first
           
-          content.GetDetails.each do |a|
-              rContent = a.Content
+          content.GetDetails.each do |content|
+              rContent = content.Content
           end
           
           return rContent
         end 
        
-      def start_all_entries(eintrag_id)
-          hasContent = checkIfContent(eintrag_id)
-          hasSubPages = checkIfSubPages(eintrag_id)
+      def start_all_entries(_entryId)
+          hasContent = checkIfContent(_entryId)
+          hasSubPages = checkIfSubPages(_entryId)
                   
           if hasContent == "true" && hasSubPages == "true"
               response = ask "Es gibt einen Content und Unterkapitel. Was hätten Sie gerne?"  
      
               if (response =~ /Content/i) 
-                  showContent(eintrag_id)
+                  showContent(_entryId)
               elsif (response =~ /Unterkapitel/i)
-                  @pages = getSubPages(eintrag_id)
-                  @pages.each do |c|
-                      say "#{c.Name} mit der ID : #{c.Entryid}"
+                  @pages = getSubPages(_entryId)
+                  @pages.each do |page|
+                      say "#{page.Name} mit der ID : #{page.Entryid}"
                   end
        
                   response = ask "Welchen?"  
@@ -168,39 +168,37 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                   return start_all_entries(response)
              else 
                   say "Ich konnte Sie nicht verstehen, bitte wiederholen Sie!"
-                  return start_all_entries(eintrag_id)
+                  return start_all_entries(_entryId)
               end
      
              elsif hasContent == "false" && hasSubPages == "true"
          
-              @pages = getSubPages(eintrag_id)
-              @pages.each do |c|
-                 say "#{c.Name} mit der ID : #{c.Entryid}"
+              @pages = getSubPages(_entryId)
+              @pages.each do |page|
+                 say "#{page.Name} mit der ID : #{page.Entryid}"
               end
         
               response = ask "Welchen?"  
               return start_all_entries(response)
                  
          elsif hasContent == "true" && hasSubPages == "false"
-              showContent(eintrag_id)
+              showContent(_entryId)
          else   
               say "Es liegen weder Inhalt noch Unterkapitel vor"
          end
                         
     end
 
-    def showContent(_id) 
-        content = getContent(_id)
+    def showContent(_entryId) 
+        content = getContent(_entryId)
         say content
     end
        
-    def showPagesWithContentAndID(page)
-        remove_zeros(page)
-        page.each do |c|
-             say "#{c.Name} mit der ID : #{c.Entryid}"
+    def showPagesWithContentAndID(_page)
+        remove_zeros(_page)
+        _page.each do |page|
+             say "#{page.Name} mit der ID : #{page.Entryid}"
         end
     end
        
-
-
  end
