@@ -41,6 +41,8 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
       end
       
       listen_for /spiel *([0-9,]*[0-9]) ab/i do |number|
+           start_connection
+       
            hasContent = "false"
            hasContent = checkIfContent(number)
            
