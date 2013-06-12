@@ -92,6 +92,20 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
           end
       end
       
+      def remove_zeros_forSubPages(eintraege)
+          eintraege.GetDetails.each do |c|
+            laenge = 0
+            loop do
+                if c.Entryid[laenge] == "0"
+                   laenge = laenge + 1
+                else
+                   c.Entryid = c.Entryid[laenge..8]
+                   break
+                end
+             end
+          end
+      end
+      
       def checkIfSubPages(eintrag_id)
           hasSubPages = "false"
           @service.Pages("'#{eintrag_id}'").expand('GetDetails')
@@ -152,7 +166,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                   showContent(eintrag_id)
               elsif (response =~ /Unterkapitel/i)
                   @pages = getSubPages(eintrag_id)
-                       
+                  remove_zeros_forSubPages(@pages)     
                   @pages.each do |c|
                       say "#{c.Name} mit der ID : #{c.Entryid}"
                   end
@@ -190,5 +204,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
              say "#{c.Name} mit der ID : #{c.Entryid}"
         end
     end
+       
+
 
  end
