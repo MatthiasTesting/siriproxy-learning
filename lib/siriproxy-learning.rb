@@ -173,7 +173,9 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
        
                   response = ask "Welchen?"  
                       return start_all_entries(response)
-                  end
+             else 
+                  return start_all_entries(eintrag_id)
+              end
      
              elsif hasContent == "false" && hasSubPages == "true"
          
