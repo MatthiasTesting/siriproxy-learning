@@ -19,7 +19,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
           request_completed
       end
       
-      listen_for /Alle Eintraege suchen/i do
+      listen_for /alle.*eintraege/i do
           say "Es werden alle Eintraege gesucht"
           Thread.new {
               start_connection
@@ -40,6 +40,17 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
          }
       end
       
+      listen_for /spiel *([0-9,]*[0-9]) ab/i do |number|
+           hasContent = "false"
+           hasContent = checkIfContent(number)
+           
+           if hasContent == "true"
+               content = getContent(number)
+               say content
+           elsif hasContent == "false"
+               say "Das Kapitel hat keinen Inhalt"
+           end
+      end
       
       listen_for /Alle (kopfeinträge|kopfdaten) suchen/i do
           Thread.new {
