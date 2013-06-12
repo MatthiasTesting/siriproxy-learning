@@ -21,57 +21,63 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
       
       listen_for /Alle Eintraege suchen/i do
           say "Es werden alle Eintraege gesucht"
-          start_connection
-          @service.Pages.count
-          @eintraege_count = @service.execute
-          
-          if @eintraege_count > 0
-              @service.Pages
-              @pages = @service.execute
+          Thread.new {
+              start_connection
+              @service.Pages.count
+              @eintraege_count = @service.execute
               
-              say "Folgende Eintraege stehen zur Verfuegung"
-              showPagesWithContentAndID(@pages)
-          elsif @eintraege_count == 0
-              say "Keine Einträge vorhanden"
-            end
-           
-          request_completed
+              if @eintraege_count > 0
+                  @service.Pages
+                  @pages = @service.execute
+                  
+                  say "Folgende Eintraege stehen zur Verfuegung"
+                  showPagesWithContentAndID(@pages)
+              elsif @eintraege_count == 0
+                  say "Keine Einträge vorhanden"
+                end
+               
+              request_completed
+         }
       end
       
       
       listen_for /Alle (kopfeinträge|kopfdaten) suchen/i do
-          start_connection
-          @service.Pages.filter("Parent eq '0'").count
-          @kopf_count = @service.execute
-          say "Es werden alle Kopfeintraege gesucht"
-          
-          if @kopf_count > 0
-              @service.Pages.filter("Parent eq '0'")
-              @kopf_eintraege = @service.execute
-          
-              say "Folgende Kopfeintraege stehen zur Verfuegung"
-              showPagesWithContentAndID(@kopf_eintraege)
-          
-          elsif @kopf_count == 0
-              say "Keine Kopfeintraege vorhanden"
-          end
-           
-          request_completed
+          Thread.new {
+              start_connection
+              @service.Pages.filter("Parent eq '0'").count
+              @kopf_count = @service.execute
+              say "Es werden alle Kopfeintraege gesucht"
+               
+              if @kopf_count > 0
+                  @service.Pages.filter("Parent eq '0'")
+                  @kopf_eintraege = @service.execute
+              
+                  say "Folgende Kopfeintraege stehen zur Verfuegung"
+                  showPagesWithContentAndID(@kopf_eintraege)
+               
+              elsif @kopf_count == 0
+                  say "Keine Kopfeintraege vorhanden"
+              end
+                
+              request_completed
+         }
       end
       
       listen_for /Alle Inhalte/i do   
-          start_connection
-           
-          @service.Pages.filter("Parent eq '0'")
-          @kopf_eintraege = @service.execute
-          
-          say "Folgende Kopfeintraege stehen zur Verfuegung"  
-          showPagesWithContentAndID(@kopf_eintraege)
-          
-          response_id = ask "Zu welcher ID möchten Sie mehr Informationen?"        
-          start_all_entries(response_id)
-           
-          request_completed    
+          Thread.new {      
+              start_connection
+               
+              @service.Pages.filter("Parent eq '0'")
+              @kopf_eintraege = @service.execute
+              
+              say "Folgende Kopfeintraege stehen zur Verfuegung"  
+              showPagesWithContentAndID(@kopf_eintraege)
+              
+              response_id = ask "Zu welcher ID möchten Sie mehr Informationen?"        
+              start_all_entries(response_id)
+               
+              request_completed   
+         }
       end
            
       def start_connection
