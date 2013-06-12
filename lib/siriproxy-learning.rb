@@ -164,7 +164,8 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                   end
        
                   response = ask "Welchen?"  
-                      return start_all_entries(response)
+                  
+                  return start_all_entries(response)
              else 
                   say "Ich konnte Sie nicht verstehen, bitte wiederholen Sie!"
                   return start_all_entries(eintrag_id)
