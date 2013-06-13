@@ -52,6 +52,22 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
            elsif hasContent == "false"
                say "Das Kapitel hat keinen Inhalt"
            end
+           
+           request_completed
+      end
+      
+      listen_for /Such mir alle Einträge zu ([a-z,]*[A-Z])/i do |keyword|
+         start_connection
+         
+         @service.Pages.filter("Tags eq '#{keyword}'")
+         @pages = @service.execute
+         
+         @pages.each do |page|
+             say "#{page.Name} mit der ID : #{page.Entryid}"
+          end
+         
+         request_completed
+        
       end
       
       listen_for /Alle (kopfeinträge|kopfdaten) suchen/i do
