@@ -56,18 +56,17 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
            request_completed
       end
       
-      listen_for /Such mir alle Einträge zu ([a-z,]*[A-Z])/i do |keyword|
+      listen_for /Suche.*Einträge.* ([a-z,]*[A-Z])/i do |keyword|
          start_connection
          
          @service.Pages.filter("Tags eq '#{keyword}'")
          @pages = @service.execute
-         
+         remove_zeros(@pages)
          @pages.each do |page|
              say "#{page.Name} mit der ID : #{page.Entryid}"
-          end
-         
-         request_completed
-        
+         end
+
+         request_completed      
       end
       
       listen_for /Alle (kopfeinträge|kopfdaten) suchen/i do
