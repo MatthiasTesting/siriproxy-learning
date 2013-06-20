@@ -19,7 +19,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
           request_completed
       end
       
-      listen_for /alle.*eintraege/i do
+      listen_for /SAP alle.*einträge/i do
           say "Es werden alle Eintraege gesucht"
           Thread.new {
               start_connection
@@ -40,23 +40,18 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
          }
       end
       
-      listen_for /spiel.*([0-9,]*[0-9]) ab/i do |number|
-           start_connection
-       
-           hasContent = "false"
-           hasContent = checkIfContent(number)
+      listen_for /SAP Eintrag ([0-9]){1-3}/i do |number|
+          
+           start_connection 
            
-           if hasContent == "true"
-               content = getContent(number)
-               say content
-           elsif hasContent == "false"
-               say "Das Kapitel hat keinen Inhalt"
-           end
+           content = getContent(number)
+           say content
+     
            
            request_completed
       end
       
-      listen_for /Suche.*Einträge.* ([a-z,]*[A-Z])/i do |keyword|
+      listen_for /Suche.*Einträge ([a-z,]*[A-Z])/i do |keyword|
          start_connection
          
          @service.Pages.filter("Tags eq '#{keyword}'")
@@ -101,7 +96,8 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
          say "Folgende Kopfeintraege stehen zur Verfuegung"  
          showPagesWithContentAndID(@kopf_eintraege)
          
-         response_id = ask "Zu welcher ID möchten Sie mehr Informationen?"        
+         response_id = ask "Zu welcher Nummer möchten Sie mehr Informationen?"        
+         
          start_all_entries(response_id)
           
          request_completed   
@@ -114,6 +110,8 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
       
       def remove_zeros(_entries)
           _entries.each do |entry|
+            unless entry.Entryid.nil? 
+
             length = 0
             loop do
                 if entry.Entryid[length] == "0"
@@ -123,7 +121,9 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                    break
                 end
              end
-          end
+ 	end
+	     end
+
       end
 
       
@@ -157,10 +157,10 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
       end
         
       def getSubPages(_entryId)
-          @service.Pages("'#{_entryId}'").expand('GetDetails').expand('GetDetails/GetSubpages')       
-          rSubPages = @service.execute.first
-          
+          @service.Pages("'#{_entryId}'").expand('GetDetails').expand('GetDetails/GetSubpages')    
 
+          rSubPages = @service.execute.first
+	 
           return rSubPages.GetDetails
       end 
       
@@ -176,7 +176,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
           
           return rContent
         end 
-       
+   
       def start_all_entries(_entryId)
           hasContent = checkIfContent(_entryId)
           hasSubPages = checkIfSubPages(_entryId)
@@ -189,10 +189,11 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
               elsif (response =~ /Unterkapitel/i)
                   @pages = getSubPages(_entryId)
                   @pages.each do |page|
+                   
                       say "#{page.Name} mit der ID : #{page.Entryid}"
                   end
        
-                  response = ask "Welchen?"  
+                  response = ask "Welchen Artikel abspielen?"  
                   
                   return start_all_entries(response)
              else 
@@ -201,13 +202,10 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
               end
      
              elsif hasContent == "false" && hasSubPages == "true"
-         
+
               @pages = getSubPages(_entryId)
-              @pages.each do |page|
-                 say "#{page.Name} mit der ID : #{page.Entryid}"
-              end
-        
-              response = ask "Welchen?"  
+              showPagesWithContentAndID(@pages)
+              response = ask "Welchen Artikel moechten Sie?"  
               return start_all_entries(response)
                  
          elsif hasContent == "true" && hasSubPages == "false"
@@ -225,9 +223,11 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
        
     def showPagesWithContentAndID(_page)
         remove_zeros(_page)
-        _page.each do |page|
-             say "#{page.Name} mit der ID : #{page.Entryid}"
-        end
+        _page.each_with_index do |page, index|
+             unless index == 0 && page.Entryid.nil?
+                 say "#{page.Name} mit der Nummer : #{page.Entryid}"
+	     end   
+	end
     end
        
  end
