@@ -45,11 +45,8 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
            
            if has_Content == "true"
            	showContent(number)
-
-           
            else
-           say "Das Kapitel hat keinen Inhalt"
-           
+           	say "Das Kapitel hat keinen Inhalt"
            end
            
            request_completed
@@ -63,6 +60,15 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 
 	 showPagesWithContentAndID(@pages)
        
+         response_id = ask "Welchen Eintrag möchten Sie abspielen lassen?"
+         
+         has_Content = checkIfContent(response_id)
+         
+         if has_Content = "true"
+             showContent(response_id)
+         elsif has_Content = "false"
+             say "Das Kapitel hat keinen Inhalt"
+         end
          request_completed      
       end
       
