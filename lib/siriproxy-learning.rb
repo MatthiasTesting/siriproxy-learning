@@ -57,7 +57,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
          request_completed      
       end
       
-      listen_for /Alle (kopfeinträge|kopfdaten) suchen/i do
+      listen_for /SAP Alle (kopfeinträge|kopfdaten) suchen/i do
           Thread.new {
               start_connection
               @service.Pages.filter("Parent eq '0'").count
@@ -79,7 +79,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
          }
       end
       
-      listen_for /alle.*inhalte/i do   
+      listen_for /SAP alle.*inhalte/i do   
           
          start_connection
           
