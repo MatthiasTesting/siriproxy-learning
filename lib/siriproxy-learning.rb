@@ -35,13 +35,13 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
          
       end
       
-      listen_for /SAP Eintrag ([0-9]*[0-9]) (?: abspielen)?/i do |number|
+      listen_for /SAP Eintrag ([0-9]*[0-9])(?: abspielen)?/i do |number|
           
            start_connection 
            
            has_Content = "false"
            
-           has_Content = checkIfSubPages(number)
+           has_Content = checkIfContent(number)
            
            if has_Content == "true"
            	
