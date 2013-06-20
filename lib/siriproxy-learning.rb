@@ -13,34 +13,29 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
           @service = ""
           @pages = ""
       end
-             
-      listen_for /Teste Verbindung/i do
-          check_connection
-          request_completed
-      end
       
       listen_for /SAP alle.*einträge/i do
           say "Es werden alle Eintraege gesucht"
-          Thread.new {
-              start_connection
-              @service.Pages.count
-              @eintraege_count = @service.execute
-              
-              if @eintraege_count > 0
-                  @service.Pages
-                  @pages = @service.execute
-                  
-                  say "Folgende Eintraege stehen zur Verfuegung"
-                  showPagesWithContentAndID(@pages)
-              elsif @eintraege_count == 0
-                  say "Keine Einträge vorhanden"
-                end
-               
-              request_completed
-         }
+
+	      start_connection
+	      @service.Pages.count
+	      @eintraege_count = @service.execute
+	      
+	      if @eintraege_count > 0
+		  @service.Pages
+		  @pages = @service.execute
+		  
+		  say "Folgende Eintraege stehen zur Verfuegung"
+		  showPagesWithContentAndID(@pages)
+	      elsif @eintraege_count == 0
+		  say "Keine Einträge vorhanden"
+		end
+	       
+	      request_completed
+         
       end
       
-      listen_for /SAP Eintrag ([0-9]){1-3}/i do |number|
+      listen_for /SAP Eintrag ([0-9]*[0-9])/i do |number|
           
            start_connection 
            
@@ -51,16 +46,14 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
            request_completed
       end
       
-      listen_for /Suche.*Einträge ([a-z,]*[A-Z])/i do |keyword|
+      listen_for /SAP Suche.*Einträge ([a-z,]*[A-Z])/i do |keyword|
          start_connection
-         
+         keyword.upcase!
          @service.Pages.filter("Tags eq '#{keyword}'")
          @pages = @service.execute
-         remove_zeros(@pages)
-         @pages.each do |page|
-             say "#{page.Name} mit der ID : #{page.Entryid}"
-         end
 
+	 showPagesWithContentAndID(@pages)
+       
          request_completed      
       end
       
@@ -121,7 +114,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
                    break
                 end
              end
- 	end
+		end
 	     end
 
       end
