@@ -10,7 +10,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
           @kopf_eintraege = ""
           @head_count = 0
           @eintraege_count = 0
-          @service = ""
+          @service = OData::Service.new "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV", { :username => "MAR", :password=> "Bachelor4711." }
           @pages = ""
       end
       
@@ -37,7 +37,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
       
       listen_for /SAP Eintrag ([0-9]*[0-9])(?: abspielen)?/i do |number|
           
-           start_connection 
+
            
            has_Content = "false"
            
@@ -53,7 +53,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
       end
       
       listen_for /SAP Suche.*Einträge zu ([a-z,]*[A-Z])/i do |keyword|
-         start_connection
+
          keyword.upcase!
          
 
@@ -62,7 +62,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
          @service.Pages.filter("Tags eq '#{keyword}'").count
          @eintraege_count = @service.execute
             
-         if @head_count > 0
+         if @eintraege_count > 0
          	@service.Pages.filter("Tags eq '#{keyword}'")
          	@pages = @service.execute
 		 showPagesWithContentAndID(@pages)
@@ -71,12 +71,12 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 	         
 	         has_Content = checkIfContent(response_id)
 	         
-	         if has_Content = "true"
+	         if has_Content == "true"
 	             showContent(response_id)
-	         elsif has_Content = "false"
+	         elsif has_Content == "false"
 	             say "Das Eintrag hat keinen Inhalt"
 	         end
-         elsif @head_counter == 0
+         elsif @eintraege_count == 0
                 say "Keine Einträge gefunden"
          end
          request_completed      
