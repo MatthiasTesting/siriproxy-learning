@@ -15,7 +15,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
       end
       
       listen_for /SAP alle.*einträge/i do
-          say "Es werden alle Eintraege gesucht"
+          say "Es werden alle Einträge gesucht"
 
 	      start_connection
 	      @service.Pages.count
@@ -25,7 +25,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 		  @service.Pages
 		  @pages = @service.execute
 		  
-		  say "Folgende Eintraege stehen zur Verfuegung"
+		  say "Folgende Einträge stehen zur Verfuegung"
 		  showPagesWithContentAndID(@pages)
 	      elsif @eintraege_count == 0
 		  say "Keine Einträge vorhanden"
@@ -46,7 +46,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
            if has_Content == "true"
            	showContent(number)
            else
-           	say "Das Kapitel hat keinen Inhalt"
+           	say "Der Eintrag hat keinen Inhalt"
            end
            
            request_completed
@@ -67,7 +67,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
          if has_Content = "true"
              showContent(response_id)
          elsif has_Content = "false"
-             say "Das Kapitel hat keinen Inhalt"
+             say "Das Eintrag hat keinen Inhalt"
          end
          request_completed      
       end
@@ -77,17 +77,17 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
               start_connection
               @service.Pages.filter("Parent eq '0'").count
               @head_count = @service.execute
-              say "Es werden alle Kopfeintraege gesucht"
+              say "Es werden alle Kopfeinträge gesucht"
                
               if @head_count > 0
                   @service.Pages.filter("Parent eq '0'")
                   @kopf_eintraege = @service.execute
               
-                  say "Folgende Kopfeintraege stehen zur Verfuegung"
+                  say "Folgende Kopfeinträge stehen zur Verfuegung"
                   showPagesWithContentAndID(@kopf_eintraege)
                
               elsif @head_count == 0
-                  say "Keine Kopfeintraege vorhanden"
+                  say "Keine Kopfeinträge vorhanden"
               end
                 
               request_completed
@@ -101,7 +101,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
          @service.Pages.filter("Parent eq '0'")
          @kopf_eintraege = @service.execute
          
-         say "Folgende Kopfeintraege stehen zur Verfuegung"  
+         say "Folgende Kopfeinträge stehen zur Verfügung"  
          showPagesWithContentAndID(@kopf_eintraege)
          
          response_id = ask "Zu welcher Nummer möchten Sie mehr Informationen?"        
@@ -190,18 +190,15 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
           hasSubPages = checkIfSubPages(_entryId)
                   
           if hasContent == "true" && hasSubPages == "true"
-              response = ask "Es gibt einen Content und Unterkapitel. Was hätten Sie gerne?"  
+              response = ask "Es gibt einen Content und dazugehörige Unterkapitel. Was würden Sie gerne angezeigt bekommen?"  
      
               if (response =~ /Content/i) 
                   showContent(_entryId)
               elsif (response =~ /Unterkapitel/i)
                   @pages = getSubPages(_entryId)
-                  @pages.each do |page|
-                   
-                      say "#{page.Name} mit der ID : #{page.Entryid}"
-                  end
+                  showPagesWithContentAndID(_entryId)
        
-                  response = ask "Welchen Artikel abspielen?"  
+                  response = ask "Welche Eintragnummer soll angezeigt werden?"  
                   
                   return start_all_entries(response)
              else 
@@ -213,7 +210,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 
               @pages = getSubPages(_entryId)
               showPagesWithContentAndID(@pages)
-              response = ask "Welchen Artikel moechten Sie?"  
+              response = ask "Welche Eintragnummer soll angezeigt werden?"  
               return start_all_entries(response)
                  
          elsif hasContent == "true" && hasSubPages == "false"
