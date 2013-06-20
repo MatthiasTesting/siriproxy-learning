@@ -55,19 +55,29 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
       listen_for /SAP Suche.*Einträge zu ([a-z,]*[A-Z])/i do |keyword|
          start_connection
          keyword.upcase!
-         @service.Pages.filter("Tags eq '#{keyword}'")
-         @pages = @service.execute
+         
 
-	 showPagesWithContentAndID(@pages)
-       
-         response_id = ask "Welchen Eintrag möchten Sie abspielen lassen?"
-         
-         has_Content = checkIfContent(response_id)
-         
-         if has_Content = "true"
-             showContent(response_id)
-         elsif has_Content = "false"
-             say "Das Eintrag hat keinen Inhalt"
+   
+  
+         @service.Pages.filter("Tags eq '#{keyword}'").count
+         @eintraege_count = @service.execute
+            
+         if @head_count > 0
+         	@service.Pages.filter("Tags eq '#{keyword}'")
+         	@pages = @service.execute
+		 showPagesWithContentAndID(@pages)
+	       
+	         response_id = ask "Welchen Eintrag möchten Sie abspielen lassen?"
+	         
+	         has_Content = checkIfContent(response_id)
+	         
+	         if has_Content = "true"
+	             showContent(response_id)
+	         elsif has_Content = "false"
+	             say "Das Eintrag hat keinen Inhalt"
+	         end
+         elsif @head_counter == 0
+                say "Keine Einträge gefunden"
          end
          request_completed      
       end
