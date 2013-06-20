@@ -52,7 +52,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
            request_completed
       end
       
-      listen_for /SAP Suche.*Einträge ([a-z,]*[A-Z])/i do |keyword|
+      listen_for /SAP Suche.*Einträge zu ([a-z,]*[A-Z])/i do |keyword|
          start_connection
          keyword.upcase!
          @service.Pages.filter("Tags eq '#{keyword}'")
