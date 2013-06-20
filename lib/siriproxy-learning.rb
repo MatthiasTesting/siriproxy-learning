@@ -44,9 +44,8 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
            has_Content = checkIfContent(number)
            
            if has_Content == "true"
-           	
-           content = getContent(number)
-           say content
+           	showContent(number)
+
            
            else
            say "Das Kapitel hat keinen Inhalt"
