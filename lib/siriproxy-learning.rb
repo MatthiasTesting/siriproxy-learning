@@ -94,7 +94,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
          }
       end
       
-      listen_for /SAP alle.*inhalte/i do   
+      listen_for /SAP inhaltsverzeichnis/i do   
           
          start_connection
           
