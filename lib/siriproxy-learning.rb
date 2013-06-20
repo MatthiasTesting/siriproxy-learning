@@ -17,7 +17,6 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
   listen_for /SAP alle.*einträge/i do
     say "Es werden alle Einträge gesucht"
 
-    start_connection
     @service.Pages.count
     @eintraege_count = @service.execute
 
@@ -79,7 +78,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 
   listen_for /SAP Alle (kopfeinträge|kopfdaten) suchen/i do
     Thread.new {
-      start_connection
+      
       @service.Pages.filter("Parent eq '0'").count
       @head_count = @service.execute
       say "Es werden alle Kopfeinträge gesucht"
@@ -101,8 +100,6 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 
   listen_for /SAP inhaltsverzeichnis/i do
 
-    start_connection
-
     @service.Pages.filter("Parent eq '0'")
     @kopf_eintraege = @service.execute
 
@@ -115,10 +112,6 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
 
     request_completed
 
-  end
-
-  def start_connection
-    @service = OData::Service.new "http://bfessfd.intern.itelligence.de:8000/sap/opu/odata/sap/ZLIST_SRV", { :username => "MAR", :password=> "Bachelor4711." }
   end
 
   def remove_zeros(_entries)
