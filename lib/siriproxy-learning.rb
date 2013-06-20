@@ -35,7 +35,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
          
       end
       
-      listen_for /SAP Eintrag ([0-9]*[0-9])*.abspielen/i do |number|
+      listen_for /SAP Eintrag ([0-9]*[0-9]) (?: abspielen)?/i do |number|
           
            start_connection 
            
