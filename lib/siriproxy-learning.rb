@@ -187,9 +187,9 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
     hasSubPages = checkIfSubPages(_entryId)
 
     if hasContent == "true" && hasSubPages == "true"
-      response = ask "Es gibt einen Content und dazugehörige Unterkapitel. Was würden Sie gerne angezeigt bekommen?"
+      response = ask "Es gibt einen Inhalt und dazugehörige Unterkapitel. Was würden Sie gerne angezeigt bekommen?"
 
-      if (response =~ /Content/i)
+      if (response =~ /Inhalt/i)
         showContent(_entryId)
       elsif (response =~ /Unterkapitel/i)
         @pages = getSubPages(_entryId)
