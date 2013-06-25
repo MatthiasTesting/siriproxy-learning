@@ -49,7 +49,7 @@ class SiriProxy::Plugin::Learning < SiriProxy::Plugin
     request_completed
   end
 
-  listen_for /SAP Suche.*Einträge zu ([a-z]*)/i do |keyword|
+  listen_for /SAP Suche.*Einträge zum (Thema|Inhalt) ([a-z]*)/i do |opt, keyword|
 
     keyword.upcase!
 
